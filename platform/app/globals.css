@@ -1,0 +1,80 @@
+@import "tailwindcss";
+
+/* ZUMIQ platform theme.
+   Kept deliberately close to the static demo in web/ so the two read as one
+   product rather than two different apps. */
+@theme {
+  --color-bg: #080d18;
+  --color-surface: #111a2e;
+  --color-surface-2: #16213d;
+  --color-raised: #1b2942;
+  --color-line: #22304f;
+  --color-line-soft: #1a2440;
+
+  --color-ink: #e6edf7;
+  --color-ink-2: #c2cee2;
+  --color-muted: #8fa3c4;
+  --color-faint: #61738f;
+
+  --color-accent: #22d3ee;
+  --color-accent-2: #6366f1;
+  --color-ok: #34d399;
+  --color-warn: #fbbf24;
+  --color-bad: #f87171;
+
+  --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+
+html, body { height: 100%; }
+
+body {
+  background:
+    radial-gradient(1100px 620px at 82% -12%, #17274a 0%, transparent 60%),
+    radial-gradient(900px 500px at 0% 100%, #101c33 0%, transparent 55%),
+    var(--color-bg);
+  background-attachment: fixed;
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: #24314f; border-radius: 8px;
+  border: 2px solid transparent; background-clip: padding-box;
+}
+
+/* Range inputs carry the simulator, so they get real styling rather than the
+   browser default, which is close to invisible on a dark surface. */
+input[type="range"] {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 5px; border-radius: 999px;
+  background: var(--color-line); outline: none; cursor: pointer;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 17px; height: 17px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-2));
+  border: 2px solid #0b1220;
+  box-shadow: 0 2px 8px -1px rgba(34, 211, 238, 0.6);
+}
+input[type="range"]::-moz-range-thumb {
+  width: 15px; height: 15px; border-radius: 50%; border: 2px solid #0b1220;
+  background: var(--color-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

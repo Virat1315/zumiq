@@ -1,5 +1,5 @@
 """
-ZUMIQ — Metadata Agent
+ZUMIQ - Metadata Agent
 ========================
 Automatically keeps the metadata platform current. Scans BigQuery
 INFORMATION_SCHEMA nightly, enriches with ownership/SLA/classification from a
@@ -7,12 +7,12 @@ YAML "source of truth" file, computes sensitivity flags, and maintains the
 data product catalog + column catalog + lineage.
 
 What it does automatically (no manual cataloging):
-  1. SCAN     — discovers every table/view/MV and its columns (INFORMATION_SCHEMA)
-  2. DIFF     — detects new tables, dropped tables, schema drift (new/removed cols)
-  3. ENRICH   — merges human-authored metadata (owners, SLAs, classification)
-  4. SENSITIVITY — flags PII/PCI/PHI columns from regex + glossary rules
-  5. CATALOG  — upserts metadata.table_catalog + column_catalog
-  6. ALERT    — raises SCHEMA_DRIFT and UNREGISTERED_TABLE alerts to ops.alert_history
+  1. SCAN     - discovers every table/view/MV and its columns (INFORMATION_SCHEMA)
+  2. DIFF     - detects new tables, dropped tables, schema drift (new/removed cols)
+  3. ENRICH   - merges human-authored metadata (owners, SLAs, classification)
+  4. SENSITIVITY - flags PII/PCI/PHI columns from regex + glossary rules
+  5. CATALOG  - upserts metadata.table_catalog + column_catalog
+  6. ALERT    - raises SCHEMA_DRIFT and UNREGISTERED_TABLE alerts to ops.alert_history
 
 Run:  python metadata_agent/metadata_agent.py --config metadata_agent/meta_config.json
 """

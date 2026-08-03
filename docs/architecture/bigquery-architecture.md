@@ -1,4 +1,4 @@
-# ZUMIQ — BigQuery Architecture & Optimization
+# ZUMIQ - BigQuery Architecture & Optimization
 
 > Why the warehouse is built the way it is, and how every decision maps to
 > cost, performance, and governance. This document is the "how I think about
@@ -12,7 +12,7 @@ BigQuery is a **serverless, columnar, massively parallel warehouse**:
 - **Query cost ≈ bytes read × rate** → the entire optimization playbook is
   "read fewer bytes" via partitioning, clustering, MVs, and view discipline.
 - Storage for tables older than 90 days is automatically **50% cheaper**
-  (long-term storage) — relevant when deciding data lifecycle.
+  (long-term storage) - relevant when deciding data lifecycle.
 
 ## 2. Where We Spend (and how we cut it)
 
@@ -27,7 +27,7 @@ BigQuery is a **serverless, columnar, massively parallel warehouse**:
 Real result: **43% reduction** in query spend after partitioning+clustering
 across the certified facts (scenario 05 in /scenarios).
 
-## 3. Partitioning — Why It Matters
+## 3. Partitioning - Why It Matters
 
 A daily partition of `fct_transactions` is ~200k rows (~25 MB). A dashboard
 filtering `last 30 days` reads **30 partitions, not the whole table**.
@@ -37,7 +37,7 @@ filtering `last 30 days` reads **30 partitions, not the whole table**.
 
 **Rule:** partition on the column that every query filters on (always a date).
 
-## 4. Clustering — Why It Matters
+## 4. Clustering - Why It Matters
 
 Clustering sorts rows on disk by the cluster columns so that *within* a
 partition, filters on cluster keys skip blocks:
@@ -50,7 +50,7 @@ partition, filters on cluster keys skip blocks:
 almost nothing. Our `fct_pipeline_runs` clusters by `pipeline_name, status`
 only because pipeline_name is selective.
 
-## 5. Materialized Views — The Latency Cure
+## 5. Materialized Views - The Latency Cure
 
 `mv_daily_gmv_by_bu` pre-aggregates GMV by BU/day and the engine **auto-
 increments it** as base partitions land. Dashboard reads KB instead of GB,
@@ -62,7 +62,7 @@ with a bounded staleness (3h). We choose MV over manual aggregate tables when:
 ## 6. Cost Governance Tooling
 
 1. **Labels everywhere** (dataset, table, query) → billing attribution by team.
-2. **`cost.fct_query_cost`** from `INFORMATION_SCHEMA.JOBS_BY_PROJECT` — the
+2. **`cost.fct_query_cost`** from `INFORMATION_SCHEMA.JOBS_BY_PROJECT` - the
    single source for FinOps dashboards and anomaly alerts.
 3. **Dry-run** (`--dry_run`) in CI blocks PRs that scan > X TB.
 4. **On-demand → flat-rate** decision: at >$X/month steady load, a reservation
@@ -71,7 +71,7 @@ with a bounded staleness (3h). We choose MV over manual aggregate tables when:
 
 ## 7. Query Optimization Checklist (used in every PR)
 
-- [ ] Date filter on the partition column — never `*`
+- [ ] Date filter on the partition column - never `*`
 - [ ] Filter on cluster keys where possible
 - [ ] `SELECT` only needed columns (columnar! fewer bytes)
 - [ ] Aggregations pushed to BigQuery (no client-side loops)

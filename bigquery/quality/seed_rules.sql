@@ -1,5 +1,5 @@
 -- ============================================================================
--- ZUMIQ — Data Quality Engine · seed_rules.sql
+-- ZUMIQ - Data Quality Engine · seed_rules.sql
 -- The rule catalog that bootstraps the DQ engine for the certified tables.
 -- Severity weights: ERROR=1.0, WARNING=0.5, INFO=0.1 (see dq_engine.py).
 -- ============================================================================

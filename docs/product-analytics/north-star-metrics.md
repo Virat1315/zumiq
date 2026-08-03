@@ -1,4 +1,4 @@
-# ZUMIQ — Product Analytics Framework
+# ZUMIQ - Product Analytics Framework
 
 > The north star and the metric hierarchy that turns the platform into a
 > product. Everything here is measurable from `fct_employee_activity`,
@@ -6,7 +6,7 @@
 
 ## 1. North Star Metric
 
-**Weekly Trusted Decisions (WTD)** — the number of dashboard/report views and
+**Weekly Trusted Decisions (WTD)** - the number of dashboard/report views and
 API calls that consume a **certified** data product in a week.
 
 ```

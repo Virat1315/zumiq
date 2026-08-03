@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ZUMIQ — Executive Overview Workbook (Tableau Desktop / Server)
+  ZUMIQ - Executive Overview Workbook (Tableau Desktop / Server)
   ==============================================================
   Certified workbook. Data source: BigQuery semantic layer.
   Connects to: analytics_layer.v_executive_overview (primary)
@@ -151,7 +151,7 @@
         </view>
       </table>
       <description>
-        Certified: Big-number tiles — GMV, Active Customers, AOV (latest day), DQ Score,
+        Certified: Big-number tiles - GMV, Active Customers, AOV (latest day), DQ Score,
         Freshness. The numbers here are guaranteed to match every other dashboard.
       </description>
     </worksheet>

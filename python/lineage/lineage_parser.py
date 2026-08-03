@@ -1,5 +1,5 @@
 """
-ZUMIQ — Column-Level Lineage Parser
+ZUMIQ - Column-Level Lineage Parser
 ====================================
 Parses BigQuery view definitions and SQL pipeline scripts to extract
 column-level lineage edges, then persists them to metadata.lineage_edges.
@@ -11,7 +11,7 @@ Supports:
   * Joins (tables listed as sources)
   * CTEs (WITH x AS (...))
 
-This is deliberately a pragmatic parser — in production the Dataform/dbt
+This is deliberately a pragmatic parser - in production the Dataform/dbt
 manifest or Cloud Data Catalog provides authoritative lineage; this tool
 bootstraps lineage for legacy scripts and acts as a cross-check.
 

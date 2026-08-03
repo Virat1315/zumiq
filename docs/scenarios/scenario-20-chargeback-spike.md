@@ -1,14 +1,14 @@
-# Scenario 20 — Chargeback Rate Spike
+# Scenario 20 - Chargeback Rate Spike
 
 **Severity:** P1 · **Domain:** Risk / Revenue
 
 ## Problem
-Chargebacks jumped from 0.9% to 4.1% of GMV in a week — a classic fraud or
+Chargebacks jumped from 0.9% to 4.1% of GMV in a week - a classic fraud or
 billing-issue signal. The risk team had no aggregated view; they were
 downloading raw extracts.
 
 ## SQL Investigation
-Step 1 — confirm and quantify the spike:
+Step 1 - confirm and quantify the spike:
 
 ```sql
 SELECT txn_date,
@@ -22,7 +22,7 @@ GROUP BY 1 ORDER BY 1;
 -- Rate: 0.9% → 4.1% on Jul 11
 ```
 
-Step 2 — cluster by product / region / merchant:
+Step 2 - cluster by product / region / merchant:
 
 ```sql
 SELECT p.product_category, r.region_name, ch.channel_code,
@@ -38,7 +38,7 @@ HAVING cbs > 50 ORDER BY 4 DESC LIMIT 10;
 -- Consumer Electronics via API channel in APAC = 92% of chargebacks
 ```
 
-Step 3 — correlate with ops events (was it payment-related?):
+Step 3 - correlate with ops events (was it payment-related?):
 
 ```sql
 SELECT event_date, event_type, COUNT(*) AS n
@@ -52,11 +52,11 @@ GROUP BY 1 ORDER BY 1;
 ## Root Cause
 A new API integration partner (reseller channel) launched with a **misconfigured
 billing token**: customers were charged twice, then filed chargebacks when they
-saw double charges. The risk was in the new channel — hidden because risk
+saw double charges. The risk was in the new channel - hidden because risk
 analysts weren't looking at aggregated chargeback views (they had no dashboard).
 
 ## Dashboard
-"Chargeback & Risk" — chargeback rate by channel/product/region with trend,
+"Chargeback & Risk" - chargeback rate by channel/product/region with trend,
 alerts at 2× baseline. Risk team now watches this daily.
 
 ## Business Impact

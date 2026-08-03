@@ -1,4 +1,4 @@
-# Scenario 03 — Pipeline Failure Blocking the Overnight Batch
+# Scenario 03 - Pipeline Failure Blocking the Overnight Batch
 
 **Severity:** P1 · **Domain:** Reliability
 
@@ -8,7 +8,7 @@ Finance close team waited for data that never arrived; the exec brief was
 stale. Nobody was paged because there was no alert wiring.
 
 ## SQL Investigation
-Step 1 — read the pipeline runs table for the failure:
+Step 1 - read the pipeline runs table for the failure:
 
 ```sql
 SELECT run_id, pipeline_name, run_started_at, run_finished_at, status,
@@ -21,7 +21,7 @@ ORDER BY run_started_at;
 -- rows_read = 412,903 · rows_written = 0
 ```
 
-Step 2 — what did the staging input look like? (schema/dedup context):
+Step 2 - what did the staging input look like? (schema/dedup context):
 
 ```sql
 -- Did staging receive a malformed file / schema change?
@@ -33,7 +33,7 @@ WHERE ingestion_date = '2026-07-13';
 -- staging_rows = 412,903 but distinct_ids = 411,102 → 1,801 DUPLICATES
 ```
 
-Step 3 — check dependency ordering (which jobs were supposed to run first):
+Step 3 - check dependency ordering (which jobs were supposed to run first):
 
 ```sql
 SELECT run_id, pipeline_name, status, run_started_at
@@ -48,7 +48,7 @@ batch). The load's PK-check rejected the whole batch rather than deduping it.
 The failure was silent: no alert existed, so the batch sat failed for 6 hours.
 
 ## Dashboard
-"Pipeline Health" — success rate per pipeline, latest run status, failure
+"Pipeline Health" - success rate per pipeline, latest run status, failure
 reason, and **SLA countdown** (how much time before this table breaks its SLA).
 
 ## Business Impact
@@ -62,5 +62,5 @@ reason, and **SLA countdown** (how much time before this table breaks its SLA).
 2. **Alert wiring**: pipeline FAILED → HIGH alert → page platform on-call
    (30-min SLA). This is now the #1 rule in the runbook.
 3. **Dependency DAG awareness**: `FCT_TRANSACTIONS_LOAD` waits on staging
-   success (Composer sensor) — no partial source.
+   success (Composer sensor) - no partial source.
 4. **Auto-retry**: first retry at +10 min; escalate to human at +30 min.

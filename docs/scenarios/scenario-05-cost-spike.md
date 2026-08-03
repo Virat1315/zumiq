@@ -1,4 +1,4 @@
-# Scenario 05 — Cloud Cost Spike: $14k/day → $41k/day
+# Scenario 05 - Cloud Cost Spike: $14k/day → $41k/day
 
 **Severity:** P1 · **Domain:** Cost
 
@@ -8,7 +8,7 @@ The monthly cloud invoice jumped ~3× in a week. BigQuery spend went from
 answers and a cap.
 
 ## SQL Investigation
-Step 1 — find the spender(s) driving the spike:
+Step 1 - find the spender(s) driving the spike:
 
 ```sql
 SELECT user_email, ROUND(SUM(cost_usd), 2) AS cost_usd,
@@ -20,7 +20,7 @@ GROUP BY 1 ORDER BY 2 DESC LIMIT 10;
 -- analyst@zumiq.io: $27,100 in 7 days → 54 TB
 ```
 
-Step 2 — what exactly is this user running? (query text / tables):
+Step 2 - what exactly is this user running? (query text / tables):
 
 ```sql
 SELECT job_id, ROUND(bytes_processed / 1e9, 2) AS gb, ROUND(cost_usd,2) AS cost,
@@ -33,7 +33,7 @@ ORDER BY 3 DESC LIMIT 10;
 -- via a Tableau extract refresh with NO date filter.
 ```
 
-Step 3 — confirm it's wasteful (cache / partitioning):
+Step 3 - confirm it's wasteful (cache / partitioning):
 
 ```sql
 SELECT COUNTIF(cache_hit) AS cached, COUNT(*) AS total,
@@ -47,10 +47,10 @@ WHERE user_email = 'analyst@zumiq.io'
 A Tableau data extract was configured with a **full-table refresh every 30
 minutes** and no partition filter. Every refresh scanned ~2 years of
 `fct_transactions` (~200 TB/month). On-demand pricing multiplied by volume.
-Classic "small config, huge bill" — invisible because there was no cost alert.
+Classic "small config, huge bill" - invisible because there was no cost alert.
 
 ## Dashboard
-"Cost Governance" — daily spend by user/team/dataset with anomaly threshold
+"Cost Governance" - daily spend by user/team/dataset with anomaly threshold
 ($1k/day/user → red). Budget bar per cost center.
 
 ## Business Impact

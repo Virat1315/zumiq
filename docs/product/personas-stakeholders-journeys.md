@@ -1,8 +1,8 @@
-# ZUMIQ — Personas, Stakeholders & Journey Maps
+# ZUMIQ - Personas, Stakeholders & Journey Maps
 
 ## 1. Primary Personas
 
-### Persona 1 — "Elena", CFO / Executive
+### Persona 1 - "Elena", CFO / Executive
 - **Bio**: CFO of a $12B global enterprise. Signs off on quarterly guidance.
 - **Goals**: One defensible number. Spot risks early. Hold BUs accountable.
 - **Pains**: 7 versions of revenue; KPIs arrive Monday for last week; "why is
@@ -11,7 +11,7 @@
 - **ZUMIQ answer**: Executive Overview dashboard, certified KPIs, 7:30 AM T1
   freshness, DQ + cost + health guardrails on one screen.
 
-### Persona 2 — "Priya", Senior Data Analyst (Retail BU)
+### Persona 2 - "Priya", Senior Data Analyst (Retail BU)
 - **Goals**: Answer BU questions fast, without re-requesting pipelines.
 - **Pains**: No metadata; doesn't know which table is current; scared of using
   the wrong definition; her queries are slow and expensive.
@@ -19,7 +19,7 @@
 - **ZUMIQ answer**: Catalog + glossary + lineage; semantic views; cost
   guardrails so her queries stay under budget.
 
-### Persona 3 — "Marcus", Analytics Engineer / Platform Engineer
+### Persona 3 - "Marcus", Analytics Engineer / Platform Engineer
 - **Goals**: Ship pipelines that don't page him at night.
 - **Pains**: Schema drift breaks downstream silently; DQ checks in random
   notebooks; no single observability view.
@@ -27,14 +27,14 @@
 - **ZUMIQ answer**: DQ engine + alerts, lineage, pipeline observability table,
   one pane of glass.
 
-### Persona 4 — "Rosa", Head of Customer Experience
+### Persona 4 - "Rosa", Head of Customer Experience
 - **Goals**: Keep SLA attainment >95%; reduce escalations.
 - **Pains**: Case data is messy; SLA board always "looks fine" then execs see
   a different number.
 - **Job to be done**: "Show me the real SLA number, and why it moved."
 - **ZUMIQ answer**: Certified SLA Attainment metric + CX dashboard + drill-down.
 
-### Persona 5 — "Dev", FinOps Manager
+### Persona 5 - "Dev", FinOps Manager
 - **Goals**: Predictable cloud bill; nobody surprises finance.
 - **Pains**: A query cost $27k with nobody noticing until the invoice.
 - **Job to be done**: "Cap the blast radius of any single user."
@@ -56,7 +56,7 @@
 
 ## 3. Journey Maps
 
-### Journey A — Analyst trying to answer "why did GMV drop?"
+### Journey A - Analyst trying to answer "why did GMV drop?"
 | Step | Emotions | Friction | ZUMIQ touchpoint |
 |---|---|---|---|
 | Notices drop in weekly report | Confused | Which dashboard is current? | Certified dashboards |
@@ -64,9 +64,9 @@
 | Investigates by BU/region | Frustrated | Queries take minutes, cost $ | Clustered facts + MV |
 | Checks if data was late | Suspicious | No freshness info | Freshness + DQ badges |
 | Looks for the cause | Anxious | Can't trace lineage | Lineage drill + scenario playbook |
-| Reports to VP | Confident | — | One number everyone agrees on |
+| Reports to VP | Confident | - | One number everyone agrees on |
 
-### Journey B — Platform engineer responding to a DQ alert
+### Journey B - Platform engineer responding to a DQ alert
 | Step | Emotions | Friction | ZUMIQ touchpoint |
 |---|---|---|---|
 | Pager fires (freshness breach) | Alert | Too many false positives | Precision-tuned alerts |
@@ -75,7 +75,7 @@
 | Checks source system | Efficient | Can't reproduce | Reproc procedure + as-of |
 | Fixes + reprocesses | Relieved | Postmortem | Automated recommendation |
 
-### Journey C — Executive morning brief
+### Journey C - Executive morning brief
 | Step | Emotions | Friction | ZUMIQ touchpoint |
 |---|---|---|---|
 | Opens brief at 7:30 | Neutral | Wants the truth | Fresh T1 data by 7:30 ET |

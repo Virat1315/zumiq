@@ -1,4 +1,4 @@
-# ZUMIQ — Business Glossary (Certified Metrics)
+# ZUMIQ - Business Glossary (Certified Metrics)
 
 > The single source of truth for every metric. A metric is only usable in an
 > executive dashboard once it is **CERTIFIED** here with an explicit formula.
@@ -58,7 +58,7 @@
 ## 6. Glossary Governance Rules
 
 1. **Only CERTIFIED terms** can appear in an executive dashboard.
-2. **Formula lives here and in the semantic layer** — never re-derived in SQL.
+2. **Formula lives here and in the semantic layer** - never re-derived in SQL.
 3. **Changes are versioned** (`effective_from/to`); a change bumps the version
    and triggers consumer notification via lineage.
 4. **Owner + steward named**; disputes escalate to the Data Product Manager.
@@ -68,5 +68,5 @@
 
 Because GMV, Net Revenue, Active Customers, SLA Attainment, and DQ Score are
 all defined once, the number shown in the CEO's morning brief **always equals**
-the number shown to the BU head — eliminating the #1 trust complaint in the
+the number shown to the BU head - eliminating the #1 trust complaint in the
 pre-ZUMIQ enterprise.

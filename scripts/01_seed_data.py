@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-ZUMIQ — Demo data seeder
+ZUMIQ - Demo data seeder
 ========================
 Generates realistic synthetic data for the core_layer schemas so that every
 SQL query in /sql and every scenario in /docs/scenarios actually runs.

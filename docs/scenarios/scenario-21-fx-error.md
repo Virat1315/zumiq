@@ -1,14 +1,14 @@
-# Scenario 21 — FX Conversion Error in Global Consolidation
+# Scenario 21 - FX Conversion Error in Global Consolidation
 
 **Severity:** P1 · **Domain:** Finance
 
 ## Problem
 The global P&L consolidation showed EMEA revenue 14% lower than local BU
-reports. The company operates in 8 currencies — Finance needed to know if it
+reports. The company operates in 8 currencies - Finance needed to know if it
 was a real business decline or a conversion error.
 
 ## SQL Investigation
-Step 1 — reproduce the consolidated number vs local numbers:
+Step 1 - reproduce the consolidated number vs local numbers:
 
 ```sql
 SELECT
@@ -25,7 +25,7 @@ GROUP BY 1 ORDER BY 2 DESC;
 -- EUR: implied_rate = 0.93 but actual EUR/USD mid-rate ≈ 1.08 → WRONG
 ```
 
-Step 2 — find the bad FX rates at transaction time:
+Step 2 - find the bad FX rates at transaction time:
 
 ```sql
 SELECT txn_date, currency_code,
@@ -38,7 +38,7 @@ GROUP BY 1, 2 ORDER BY 1;
 -- Multiple days had fx_rate = 1.0 (EUR treated as USD) → conversion skipped
 ```
 
-Step 3 — quantify the impact:
+Step 3 - quantify the impact:
 
 ```sql
 SELECT ROUND(SUM(amount_usd), 2) AS reported_usd,
@@ -57,7 +57,7 @@ had no validity rule on fx_rate, and Finance's consolidation dashboard used the
 pre-converted `amount_usd` without a sanity check.
 
 ## Dashboard
-"FX & Currency Health" — implied vs expected rates per currency, days with
+"FX & Currency Health" - implied vs expected rates per currency, days with
 fx_rate anomalies, and currency-impact on consolidated revenue.
 
 ## Business Impact
@@ -67,9 +67,9 @@ fx_rate anomalies, and currency-impact on consolidated revenue.
 ## Recommendation
 1. **DQ VALIDITY rule on fx_rate**: currency-specific expected range (EUR
    0.9–1.3, JPY 0.005–0.01, etc.) → out of range = FAIL, load blocked.
-2. **Fallback hardening**: no silent `1.0` fallback — missing rates fail the
+2. **Fallback hardening**: no silent `1.0` fallback - missing rates fail the
    pipeline loudly (never fabricate conversion).
 3. **Reconciliation check** (Q103 pattern): consolidated USD vs local ×
    published rate per day must match; mismatch → alert.
 4. **Implicit-rate monitor**: `SUM(amount_usd)/SUM(amount)` per currency vs
-   expected mid-rate — a dashboard that would have caught this in minutes.
+   expected mid-rate - a dashboard that would have caught this in minutes.

@@ -1,14 +1,14 @@
-# Scenario 06 — Duplicate Transactions Inflating Revenue
+# Scenario 06 - Duplicate Transactions Inflating Revenue
 
 **Severity:** P1 · **Domain:** DQ / Uniqueness
 
 ## Problem
 The finance close showed a suspicious revenue bump for one day. Audit found
-thousands of transactions that appeared **twice** — revenue was inflated
+thousands of transactions that appeared **twice** - revenue was inflated
 ~4.7%. If it had shipped, the quarter's guidance would have been wrong.
 
 ## SQL Investigation
-Step 1 — find exact duplicates by the dedup key:
+Step 1 - find exact duplicates by the dedup key:
 
 ```sql
 SELECT txn_id, txn_date, COUNT(*) AS occurrences
@@ -19,7 +19,7 @@ HAVING COUNT(*) > 1;
 -- 201,043 duplicated rows (every txn in the 04:00 batch repeated)
 ```
 
-Step 2 — quantify the inflation:
+Step 2 - quantify the inflation:
 
 ```sql
 WITH dup AS (
@@ -37,7 +37,7 @@ JOIN `zumiq-prod.core_layer.fct_transactions` AS t
 -- inflated_amount = $2.31M (4.7% of the day's GMV)
 ```
 
-Step 3 — where did the second copy come from?
+Step 3 - where did the second copy come from?
 
 ```sql
 SELECT etl_batch_id, etl_loaded_at, COUNT(*) AS rows
@@ -49,11 +49,11 @@ GROUP BY 1, 2 ORDER BY 2;
 
 ## Root Cause
 The pipeline retried a "failed" load after a timeout, but the first attempt had
-actually committed. The load was **not idempotent** — no dedup key guard before
+actually committed. The load was **not idempotent** - no dedup key guard before
 insert. The DQ uniqueness rule on `txn_id` did not exist yet.
 
 ## Dashboard
-"DQ Uniqueness" — per-table duplicate counts on the DQ dashboard; any table
+"DQ Uniqueness" - per-table duplicate counts on the DQ dashboard; any table
 with duplicate keys shows red. This incident motivated making uniqueness a
 permanent ERROR-severity rule.
 
@@ -68,5 +68,5 @@ permanent ERROR-severity rule.
    before the fact MERGE.
 3. **Batch idempotency**: retry logic checks whether the batch already
    committed (write batch_id to a control table).
-4. **Audit check** (Q103): nightly "fact total vs certified aggregate" diff —
+4. **Audit check** (Q103): nightly "fact total vs certified aggregate" diff -
    this is what would have caught it if the DQ rule had missed.

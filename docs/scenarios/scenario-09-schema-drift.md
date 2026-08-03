@@ -1,4 +1,4 @@
-# Scenario 09 — Schema Drift Breaking Downstream Models
+# Scenario 09 - Schema Drift Breaking Downstream Models
 
 **Severity:** P1 · **Domain:** Schema / Lineage
 
@@ -8,7 +8,7 @@ values. The source team said "we just renamed a field." Nobody could find who
 was affected until the marketing dashboard went blank.
 
 ## SQL Investigation
-Step 1 — find columns in today's source that aren't in the catalog:
+Step 1 - find columns in today's source that aren't in the catalog:
 
 ```sql
 SELECT i.table_name, i.column_name, i.data_type
@@ -21,7 +21,7 @@ WHERE i.table_schema = 'raw_layer'
 -- oms_orders_raw: 'conversion_attributed' → renamed to 'attributed_conversion'
 ```
 
-Step 2 — use lineage to find every downstream consumer:
+Step 2 - use lineage to find every downstream consumer:
 
 ```sql
 WITH RECURSIVE down AS (
@@ -40,7 +40,7 @@ FROM down GROUP BY 1, 2;
 -- attribution_model.feature_table and marketing_dashboard.bounce_view
 ```
 
-Step 3 — confirm the pipeline failed on the missing column:
+Step 3 - confirm the pipeline failed on the missing column:
 
 ```sql
 SELECT run_id, pipeline_name, status, error_message
@@ -52,11 +52,11 @@ ORDER BY run_started_at DESC LIMIT 3;
 
 ## Root Cause
 The OMS team renamed a column with zero notification. No schema registry, no
-drift detection, no lineage — downstream models failed one by one with no
+drift detection, no lineage - downstream models failed one by one with no
 early warning.
 
 ## Dashboard
-"Schema Drift" — all columns in source not in catalog, plus affected
+"Schema Drift" - all columns in source not in catalog, plus affected
 downstream (lineage walk). Green when 0 drift, red when a T1 is affected.
 
 ## Business Impact

@@ -1,14 +1,14 @@
-# Scenario 08 — Customer Service Degradation (SLA Breaches)
+# Scenario 08 - Customer Service Degradation (SLA Breaches)
 
 **Severity:** P1 · **Domain:** Customer Experience
 
 ## Problem
 Customer service SLAs were silently degrading: P1 SLA attainment fell from
 97% to 71% over two weeks. Execs found out from a customer complaint, not the
-SLA board — the board had a data bug that made it look healthy.
+SLA board - the board had a data bug that made it look healthy.
 
 ## SQL Investigation
-Step 1 — compute SLA attainment honestly by priority:
+Step 1 - compute SLA attainment honestly by priority:
 
 ```sql
 SELECT
@@ -24,7 +24,7 @@ GROUP BY 1 ORDER BY 1;
 -- P1 attainment = 71% (target 98%)
 ```
 
-Step 2 — why? Look at queue shape and aging:
+Step 2 - why? Look at queue shape and aging:
 
 ```sql
 SELECT
@@ -38,7 +38,7 @@ GROUP BY 1 ORDER BY 1;
 -- 41% of open P1s are > 3 days old → severe backlog
 ```
 
-Step 3 — is the board buggy or is the data buggy? Compare to certified metric:
+Step 3 - is the board buggy or is the data buggy? Compare to certified metric:
 
 ```sql
 -- Board used "closed" status only, ignoring "resolved not yet closed":
@@ -52,11 +52,11 @@ WHERE opened_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 14 DAY);
 ## Root Cause
 **Two problems:** (1) a real staffing/priority inversion backlog, and (2) the
 SLA board counted only `status = 'CLOSED'`, so slow-but-not-closed cases were
-invisible. The dashboard's metric was never certified against the glossary —
+invisible. The dashboard's metric was never certified against the glossary -
 exactly the semantic-drift failure the platform exists to kill.
 
 ## Dashboard
-"Support SLA Board" (certified) — attainment by priority vs target, open-case
+"Support SLA Board" (certified) - attainment by priority vs target, open-case
 aging, escalation rate, CSAT. The uncertified board was retired.
 
 ## Business Impact

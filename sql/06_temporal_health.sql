@@ -1,11 +1,11 @@
 -- ============================================================================
--- ZUMIQ — SQL LIBRARY · 06_temporal_health.sql
+-- ZUMIQ - SQL LIBRARY · 06_temporal_health.sql
 -- Freshness, SLAs, pipeline health, DQ observability, alerting.
 -- These are the "platform health" queries that ops and governance run daily.
 -- ============================================================================
 
 -- ----------------------------------------------------------------------------
--- Q067 · Freshness report — hours since last successful load per certified table
+-- Q067 · Freshness report - hours since last successful load per certified table
 -- ----------------------------------------------------------------------------
 SELECT
   c.table_id,
@@ -28,7 +28,7 @@ GROUP BY 1, 2, 3
 ORDER BY 5 DESC;
 
 -- ----------------------------------------------------------------------------
--- Q068 · Pipeline success rate — trailing 30 days by pipeline
+-- Q068 · Pipeline success rate - trailing 30 days by pipeline
 -- ----------------------------------------------------------------------------
 SELECT
   pipeline_name,
@@ -44,7 +44,7 @@ HAVING COUNT(*) > 0
 ORDER BY 3;
 
 -- ----------------------------------------------------------------------------
--- Q069 · Volume drift detection — today's row count vs trailing-28-day average
+-- Q069 · Volume drift detection - today's row count vs trailing-28-day average
 -- Uses a window function to compute the baseline without a second scan.
 -- ----------------------------------------------------------------------------
 WITH daily_rows AS (
@@ -74,7 +74,7 @@ WHERE run_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY)
 ORDER BY 5 DESC;
 
 -- ----------------------------------------------------------------------------
--- Q070 · Late-arriving data — transactions that hit the fact table N days late
+-- Q070 · Late-arriving data - transactions that hit the fact table N days late
 -- (causes revenue restatements; monitored daily)
 -- ----------------------------------------------------------------------------
 SELECT
@@ -88,7 +88,7 @@ HAVING max_late_days > 3
 ORDER BY 1;
 
 -- ----------------------------------------------------------------------------
--- Q071 · DQ score trend — daily health by data product with 7-day slope
+-- Q071 · DQ score trend - daily health by data product with 7-day slope
 -- ----------------------------------------------------------------------------
 SELECT
   score_date,
@@ -101,7 +101,7 @@ WHERE score_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 30 DAY)
 ORDER BY 1, 2;
 
 -- ----------------------------------------------------------------------------
--- Q072 · DQ failures by dimension & severity — trailing 7 days
+-- Q072 · DQ failures by dimension & severity - trailing 7 days
 -- ----------------------------------------------------------------------------
 SELECT
   dimension,
@@ -116,7 +116,7 @@ GROUP BY 1, 2
 ORDER BY 3 DESC;
 
 -- ----------------------------------------------------------------------------
--- Q073 · Schema drift detection — columns in today's source not in catalog
+-- Q073 · Schema drift detection - columns in today's source not in catalog
 -- ----------------------------------------------------------------------------
 SELECT
   i.table_name,
@@ -130,7 +130,7 @@ WHERE i.table_schema IN ('staging_layer', 'raw_layer')
   AND cc.column_name IS NULL;
 
 -- ----------------------------------------------------------------------------
--- Q074 · Alert queue — open alerts by type, age, and severity
+-- Q074 · Alert queue - open alerts by type, age, and severity
 -- ----------------------------------------------------------------------------
 SELECT
   alert_type,
@@ -145,7 +145,7 @@ GROUP BY 1, 2, 3
 ORDER BY 2;
 
 -- ----------------------------------------------------------------------------
--- Q075 · MTTR — mean time to resolve DQ/pipeline alerts by type
+-- Q075 · MTTR - mean time to resolve DQ/pipeline alerts by type
 -- ----------------------------------------------------------------------------
 SELECT
   alert_type,
@@ -158,7 +158,7 @@ GROUP BY 1
 ORDER BY 2 DESC;
 
 -- ----------------------------------------------------------------------------
--- Q076 · Data freshness of DQ runs vs SLA — is the watchdog itself healthy?
+-- Q076 · Data freshness of DQ runs vs SLA - is the watchdog itself healthy?
 -- ----------------------------------------------------------------------------
 SELECT
   run_date,

@@ -1,10 +1,10 @@
-# ZUMIQ — Data Governance Framework
+# ZUMIQ - Data Governance Framework
 
 > The rules that make "trusted data" operational: ownership, classification,
 > SLAs, certification, and accountability. Governance here is an **operating
 > system**, not a policy PDF.
 
-## 1. Operating Model — RACI
+## 1. Operating Model - RACI
 
 | Activity | Data Owner | Steward | Analytics Eng | Platform Team | Data Product Manager |
 |---|---|---|---|---|---|
@@ -56,12 +56,12 @@ R=responsible, A=accountable, C=consulted, I=informed.
 
 ## 5. Incident Response (for data incidents)
 
-1. **Detect** — DQ / freshness / cost / pipeline alerts (auto).
-2. **Triage** — platform on-call; severity = business impact.
-3. **Contain** — stop bad promotion; alert consumers via lineage.
-4. **Investigate** — root-cause (see scenario playbooks in /scenarios).
-5. **Remediate** — fix pipeline, reprocess partitions, add DQ rule.
-6. **Learn** — write a new DQ rule + postmortem; exec summary if P1.
+1. **Detect** - DQ / freshness / cost / pipeline alerts (auto).
+2. **Triage** - platform on-call; severity = business impact.
+3. **Contain** - stop bad promotion; alert consumers via lineage.
+4. **Investigate** - root-cause (see scenario playbooks in /scenarios).
+5. **Remediate** - fix pipeline, reprocess partitions, add DQ rule.
+6. **Learn** - write a new DQ rule + postmortem; exec summary if P1.
 
 ## 6. Certification Review Checklist
 
@@ -79,4 +79,4 @@ R=responsible, A=accountable, C=consulted, I=informed.
 `ops.fct_pipeline_runs` + `governance.dq_run_results` + `ops.alert_history`
 form a complete, append-only audit trail. For SOX-relevant products (Finance
 P&L) we can reconstruct: what was loaded, when, by which job, whether it
-passed DQ, and what alerts fired — exactly what a regulator asks for.
+passed DQ, and what alerts fired - exactly what a regulator asks for.

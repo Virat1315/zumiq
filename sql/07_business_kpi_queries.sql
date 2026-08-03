@@ -1,11 +1,11 @@
 -- ============================================================================
--- ZUMIQ — SQL LIBRARY · 07_business_kpi_queries.sql
+-- ZUMIQ - SQL LIBRARY · 07_business_kpi_queries.sql
 -- Cross-domain KPI queries: finance, CX, operations, cost, product.
 -- All metrics match the certified glossary definitions (semantic layer).
 -- ============================================================================
 
 -- ----------------------------------------------------------------------------
--- Q078 · Finance — P&L bridge: GMV → Net Revenue → Gross Margin by BU
+-- Q078 · Finance - P&L bridge: GMV → Net Revenue → Gross Margin by BU
 -- ----------------------------------------------------------------------------
 SELECT
   bu.bu_name,
@@ -28,7 +28,7 @@ GROUP BY 1
 ORDER BY 2 DESC;
 
 -- ----------------------------------------------------------------------------
--- Q079 · Finance — MTD vs last-MTD with % change (month-over-month)
+-- Q079 · Finance - MTD vs last-MTD with % change (month-over-month)
 -- ----------------------------------------------------------------------------
 WITH mtd AS (
   SELECT bu_key, SUM(amount_usd) AS gmv
@@ -55,7 +55,7 @@ LEFT JOIN last_mtd AS l ON m.bu_key = l.bu_key
 ORDER BY 3 DESC;
 
 -- ----------------------------------------------------------------------------
--- Q080 · CX — First Call Resolution and CSAT trends by case type
+-- Q080 · CX - First Call Resolution and CSAT trends by case type
 -- ----------------------------------------------------------------------------
 SELECT
   DATE_TRUNC(opened_date, WEEK(MONDAY)) AS week_start,
@@ -70,7 +70,7 @@ GROUP BY 1, 2
 ORDER BY 1, 2;
 
 -- ----------------------------------------------------------------------------
--- Q081 · CX — SLA attainment by priority vs target (Service desk board)
+-- Q081 · CX - SLA attainment by priority vs target (Service desk board)
 -- ----------------------------------------------------------------------------
 SELECT
   priority,
@@ -87,7 +87,7 @@ GROUP BY 1
 ORDER BY 1;
 
 -- ----------------------------------------------------------------------------
--- Q082 · Ops — service error rate by microservice (SLO tracking)
+-- Q082 · Ops - service error rate by microservice (SLO tracking)
 -- ----------------------------------------------------------------------------
 SELECT
   service_name,
@@ -102,7 +102,7 @@ ORDER BY 3 DESC
 LIMIT 20;
 
 -- ----------------------------------------------------------------------------
--- Q083 · Ops — SLA breach forecaster: services trending toward SLO violation
+-- Q083 · Ops - SLA breach forecaster: services trending toward SLO violation
 -- ----------------------------------------------------------------------------
 WITH daily AS (
   SELECT
@@ -125,7 +125,7 @@ QUALIFY error_rate_pct > 1.0 AND prior_week_rate IS NOT NULL
 ORDER BY 2, 1;
 
 -- ----------------------------------------------------------------------------
--- Q084 · Cost — top 10 expensive queries this week (FinOps review)
+-- Q084 · Cost - top 10 expensive queries this week (FinOps review)
 -- ----------------------------------------------------------------------------
 SELECT
   user_email,
@@ -140,7 +140,7 @@ ORDER BY 3 DESC
 LIMIT 10;
 
 -- ----------------------------------------------------------------------------
--- Q085 · Cost — % of spend by layer and by user segment (allocation)
+-- Q085 · Cost - % of spend by layer and by user segment (allocation)
 -- ----------------------------------------------------------------------------
 SELECT
   layer,
@@ -163,7 +163,7 @@ GROUP BY 1
 ORDER BY 1;
 
 -- ----------------------------------------------------------------------------
--- Q086 · Product adoption — weekly active users on ZUMIQ platform (our own dogfood)
+-- Q086 · Product adoption - weekly active users on ZUMIQ platform (our own dogfood)
 -- ----------------------------------------------------------------------------
 SELECT
   DATE_TRUNC(activity_date, WEEK(MONDAY)) AS week_start,
@@ -178,7 +178,7 @@ GROUP BY 1
 ORDER BY 1;
 
 -- ----------------------------------------------------------------------------
--- Q087 · Adopted vs stale dashboards — where is self-serve dying?
+-- Q087 · Adopted vs stale dashboards - where is self-serve dying?
 -- ----------------------------------------------------------------------------
 SELECT
   resource_name,
@@ -193,7 +193,7 @@ GROUP BY 1
 ORDER BY 3 DESC;
 
 -- ----------------------------------------------------------------------------
--- Q088 · Support cost of quality — cases opened due to data errors (attribution)
+-- Q088 · Support cost of quality - cases opened due to data errors (attribution)
 -- ----------------------------------------------------------------------------
 SELECT
   CASE

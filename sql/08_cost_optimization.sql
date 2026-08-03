@@ -1,11 +1,11 @@
 -- ============================================================================
--- ZUMIQ — SQL LIBRARY · 08_cost_optimization.sql
+-- ZUMIQ - SQL LIBRARY · 08_cost_optimization.sql
 -- Queries that find money left on the table. These are run by FinOps and
 -- the platform team; each result maps to a concrete savings action.
 -- ============================================================================
 
 -- ----------------------------------------------------------------------------
--- Q089 · Scans vs cost per GB — expensive low-value query patterns
+-- Q089 · Scans vs cost per GB - expensive low-value query patterns
 -- ----------------------------------------------------------------------------
 SELECT
   user_email,
@@ -35,7 +35,7 @@ ORDER BY 3 DESC
 LIMIT 25;
 
 -- ----------------------------------------------------------------------------
--- Q091 · Cache hit ratio — low cache-hit users are re-scanning shared tables
+-- Q091 · Cache hit ratio - low cache-hit users are re-scanning shared tables
 -- ----------------------------------------------------------------------------
 SELECT
   user_email,
@@ -49,7 +49,7 @@ ORDER BY 2
 LIMIT 15;
 
 -- ----------------------------------------------------------------------------
--- Q092 · Redundant dashboard queries — same query text run repeatedly
+-- Q092 · Redundant dashboard queries - same query text run repeatedly
 -- Candidate for materialized views or Tableau data extracts.
 -- ----------------------------------------------------------------------------
 SELECT
@@ -64,7 +64,7 @@ ORDER BY 2 DESC
 LIMIT 20;
 
 -- ----------------------------------------------------------------------------
--- Q093 · Slot utilization — peak vs idle (right-sizing the reservation)
+-- Q093 · Slot utilization - peak vs idle (right-sizing the reservation)
 -- ----------------------------------------------------------------------------
 SELECT
   TIMESTAMP_TRUNC(period_start, HOUR) AS hour_slot,
@@ -76,7 +76,7 @@ GROUP BY 1
 ORDER BY 1;
 
 -- ----------------------------------------------------------------------------
--- Q094 · Cost by job label (cost center) — budget compliance by team
+-- Q094 · Cost by job label (cost center) - budget compliance by team
 -- ----------------------------------------------------------------------------
 SELECT
   JSON_VALUE(query_labels, '$.cost_center') AS cost_center,
@@ -89,7 +89,7 @@ GROUP BY 1, 2
 ORDER BY 3 DESC;
 
 -- ----------------------------------------------------------------------------
--- Q095 · Partition pruning check — queries scanning full months on a daily table
+-- Q095 · Partition pruning check - queries scanning full months on a daily table
 -- ----------------------------------------------------------------------------
 SELECT
   job_id,

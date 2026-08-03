@@ -1,5 +1,5 @@
 -- ============================================================================
--- ZUMIQ — Enterprise Data Intelligence Platform
+-- ZUMIQ - Enterprise Data Intelligence Platform
 -- scheduled_queries.sql
 -- Scheduled queries = the orchestration heartbeat. Each schedule has:
 --   * a cron expression (US/Central)
@@ -29,7 +29,7 @@
 -- +---------------------------+---------------------------+-----------------+---------+
 
 -- ----------------------------------------------------------------------------
--- SQ 1: EXEC_KPIS_RECOMPUTE — recompute yesterday's executive KPIs
+-- SQ 1: EXEC_KPIS_RECOMPUTE - recompute yesterday's executive KPIs
 -- ----------------------------------------------------------------------------
 CALL `zumiq-prod.analytics_layer.sp_recompute_executive_kpis`(
   DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY),
@@ -37,12 +37,12 @@ CALL `zumiq-prod.analytics_layer.sp_recompute_executive_kpis`(
 );
 
 -- ----------------------------------------------------------------------------
--- SQ 2: DQ_ENGINE_DAILY — run DQ suite and write health scores
+-- SQ 2: DQ_ENGINE_DAILY - run DQ suite and write health scores
 -- (Implemented in Python: python/dq_engine/dq_engine.py)
 -- ----------------------------------------------------------------------------
 
 -- ----------------------------------------------------------------------------
--- SQ 3: COST_GOVERNANCE_SUMMARY — materialize daily cost summary + flag anomalies
+-- SQ 3: COST_GOVERNANCE_SUMMARY - materialize daily cost summary + flag anomalies
 -- ----------------------------------------------------------------------------
 INSERT INTO `zumiq-prod.gold_layer.cost_daily_summary`
   (summary_date, total_cost_usd, total_queries, top_spender_user,
@@ -73,7 +73,7 @@ FROM `zumiq-prod.cost.fct_query_cost`
 WHERE job_date = DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY);
 
 -- ----------------------------------------------------------------------------
--- SQ 4: PIPELINE_FRESHNESS_ALERTS — detect SLA breaches (every 30 min)
+-- SQ 4: PIPELINE_FRESHNESS_ALERTS - detect SLA breaches (every 30 min)
 -- Inserts into ops.alert_history when a table is older than its SLA.
 -- ----------------------------------------------------------------------------
 INSERT INTO `zumiq-prod.ops.alert_history`
@@ -97,7 +97,7 @@ WHERE t.last_loaded_at IS NOT NULL
   AND t.criticality = 'T1';
 
 -- ----------------------------------------------------------------------------
--- SQ 5: DQ_ANOMALY_ALERTS — raise an alert when any DQ dimension drops >X
+-- SQ 5: DQ_ANOMALY_ALERTS - raise an alert when any DQ dimension drops >X
 -- ----------------------------------------------------------------------------
 INSERT INTO `zumiq-prod.ops.alert_history`
   (alert_id, alert_type, severity, subject, message, triggered_at,
@@ -114,7 +114,7 @@ WHERE score_date = DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY)
   AND data_product_name != 'ENTERPRISE';
 
 -- ----------------------------------------------------------------------------
--- SQ 6: METADATA_SCAN — refresh catalog row counts & sizes (INFORMATION_SCHEMA)
+-- SQ 6: METADATA_SCAN - refresh catalog row counts & sizes (INFORMATION_SCHEMA)
 -- ----------------------------------------------------------------------------
 MERGE `zumiq-prod.metadata.table_catalog` AS t
 USING (

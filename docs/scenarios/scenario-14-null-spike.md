@@ -1,14 +1,14 @@
-# Scenario 14 — Null Spike in the Customer Dimension
+# Scenario 14 - Null Spike in the Customer Dimension
 
 **Severity:** P2 · **Domain:** DQ / Completeness
 
 ## Problem
-A "lapsed customer" campaign selected thousands of customers with NULL email —
+A "lapsed customer" campaign selected thousands of customers with NULL email -
 so the CRM batch job crashed and the campaign silently lost its audience. The
 dimension had a completeness problem nobody had measured.
 
 ## SQL Investigation
-Step 1 — measure the null rate over time (spike vs baseline):
+Step 1 - measure the null rate over time (spike vs baseline):
 
 ```sql
 WITH daily AS (
@@ -25,7 +25,7 @@ ORDER BY 1 DESC LIMIT 20;
 -- null_pct jumped from 0.8% baseline to 22% on one load
 ```
 
-Step 2 — which segment/source produced the nulls?
+Step 2 - which segment/source produced the nulls?
 
 ```sql
 SELECT customer_segment, country_code, COUNTIF(email IS NULL) AS null_emails, COUNT(*) AS n
@@ -43,7 +43,7 @@ ingestion mapping. EMEA GDPR consent rows came through with NULL email. No
 completeness rule existed on the dimension, so the platform loaded it silently.
 
 ## Dashboard
-"DQ Completeness" — per-column null rates vs trailing baseline with NULL_SPIKE
+"DQ Completeness" - per-column null rates vs trailing baseline with NULL_SPIKE
 flag (Q104). Red flag on the customer dimension.
 
 ## Business Impact

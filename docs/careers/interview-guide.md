@@ -1,4 +1,4 @@
-# ZUMIQ — Interview Guide (How to Present This Project)
+# ZUMIQ - Interview Guide (How to Present This Project)
 
 > A playbook for walking interviewers through ZUMIQ in 5, 15, or 45 minutes.
 > Structured by role target: Product Manager, Analytics Engineer, Data
@@ -8,7 +8,7 @@
 
 "ZUMIQ is an internal enterprise data platform I designed and built end-to-end
 that turns raw operational data from nine source systems into certified,
-governed data products — the way a Fortune 100 platform team would build it.
+governed data products - the way a Fortune 100 platform team would build it.
 It solved five real problems we all see: seven conflicting definitions of
 revenue, invisible data quality, no metadata or lineage, runaway BigQuery
 costs, and dashboards nobody trusts. On BigQuery, I built a medallion data
@@ -21,12 +21,12 @@ SQL, and the business playbooks."
 
 ## 2. The 5-Minute Demo Arc (recruiter / non-technical)
 
-1. **Problem (30s):** the enterprise status quo — duplicated data, no trust.
-2. **Product (60s):** data as a product — owners, SLAs, DQ floors.
+1. **Problem (30s):** the enterprise status quo - duplicated data, no trust.
+2. **Product (60s):** data as a product - owners, SLAs, DQ floors.
 3. **Architecture (60s):** one slide of the 8-layer medallion + governance.
 4. **Proof (90s):** three before/after numbers (43% cost cut, 98 DQ score,
    1 definition of revenue, 22 incident playbooks).
-5. **Your role (30s):** product manager + analytics engineer — you defined
+5. **Your role (30s):** product manager + analytics engineer - you defined
    metrics, ran the roadmap, wrote the SQL, shipped the dashboards.
 
 ## 3. The 15-Minute Technical Walkthrough
@@ -96,4 +96,4 @@ steps.
 - **Enterprise literacy:** SLAs, RACI, SOX, promotion gates, one-version-of-truth.
 - **Hands-on depth:** you wrote the DDL, the DQ engine, and the SQL.
 - **Product instinct:** north star, guardrails, adoption funnels, runbooks.
-- **Impact:** numbers — 43% cost, 98 DQ, 0 definition conflicts, 22 runbooks.
+- **Impact:** numbers - 43% cost, 98 DQ, 0 definition conflicts, 22 runbooks.

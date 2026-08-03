@@ -1,4 +1,4 @@
-# ZUMIQ — Architecture Decision Records (ADRs)
+# ZUMIQ - Architecture Decision Records (ADRs)
 
 > Decisions made, options considered, tradeoffs accepted. This is how a real
 > platform team documents why the system looks the way it does.
@@ -49,8 +49,8 @@ uses the current-version guard.
 **Context:** Dashboard latency and cost were driven by full-table scans.
 **Decision:** Every fact partitions on its always-filtered date column and
 clusters on the next 2–3 most selective consumer keys.
-**Options:** Integer-range partitions (rejected — adds complexity, no benefit
-at daily grain); no clustering (rejected — cost).
+**Options:** Integer-range partitions (rejected - adds complexity, no benefit
+at daily grain); no clustering (rejected - cost).
 **Consequence:** 43% spend reduction; must re-cluster after massive deletes
 (rare; handled by repartition procedure).
 
@@ -62,7 +62,7 @@ at daily grain); no clustering (rejected — cost).
 CERTIFIED glossary terms; hot aggregates become auto-refreshing MVs.
 **Options:** Direct-to-dashboard custom SQL (rejected); dbt model only (accepted
 as the SQL CI layer, complements views).
-**Consequence:** Dashboards cannot define KPIs — they select certified views.
+**Consequence:** Dashboards cannot define KPIs - they select certified views.
 
 ## ADR-006 · Cost as a first-class citizen with labels + telemetry + budgets
 
@@ -80,7 +80,7 @@ budgets; dry-run gates in CI; FinOps dashboard + anomaly alerts.
 **Decision:** Centralized `governance.dq_rules` catalog + engine that renders
 SQL, scores 9 dimensions, alerts, and blocks promotion on ERROR failures.
 **Options:** Great Expectations (great, but heavier and less native to BQ);
-custom-only (rejected — no standards).
+custom-only (rejected - no standards).
 **Consequence:** Every certified product has a DQ floor and a visible score.
 
 ## ADR-008 · Data product ownership model (data mesh philosophy, centralized platform)
@@ -88,9 +88,9 @@ custom-only (rejected — no standards).
 **Status:** Accepted
 **Context:** Nobody owned "the customer table"; incidents had no owner.
 **Decision:** Every certified dataset has an owner team + data owner + steward,
-SLA, DQ floor, classification — the data product registry.
-**Options:** Full decentralized mesh (rejected — too early, platform risk);
-fully centralized (rejected — too slow for BU teams).
+SLA, DQ floor, classification - the data product registry.
+**Options:** Full decentralized mesh (rejected - too early, platform risk);
+fully centralized (rejected - too slow for BU teams).
 **Tradeoff:** Central platform + domain ownership = accountable, but still
 fast. The registry is the accountability contract.
 

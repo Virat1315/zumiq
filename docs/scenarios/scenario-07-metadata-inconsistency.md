@@ -1,4 +1,4 @@
-# Scenario 07 — Metadata Inconsistency Breaking Tableau Extracts
+# Scenario 07 - Metadata Inconsistency Breaking Tableau Extracts
 
 **Severity:** P2 · **Domain:** Metadata
 
@@ -8,17 +8,17 @@ column. The extract worked last week. No source change was announced. The
 business team assumed a data bug.
 
 ## SQL Investigation
-Step 1 — is the column still there, with data?
+Step 1 - is the column still there, with data?
 
 ```sql
 SELECT customer_segment, COUNT(*) AS n
 FROM `zumiq-prod.core_layer.dim_customer`
 WHERE is_current = TRUE
 GROUP BY 1;
--- All segments present in BigQuery — data is fine
+-- All segments present in BigQuery - data is fine
 ```
 
-Step 2 — check the catalog & lineage: what does the dashboard actually read?
+Step 2 - check the catalog & lineage: what does the dashboard actually read?
 
 ```sql
 SELECT e.source_table, e.source_column, e.target_table, e.target_column
@@ -29,7 +29,7 @@ ORDER BY 1;
 -- (analytics_layer.v_customer_segment_old), NOT from dim_customer.
 ```
 
-Step 3 — confirm the stale view exists and when it was last changed:
+Step 3 - confirm the stale view exists and when it was last changed:
 
 ```sql
 SELECT table_name, ROW_COUNT, SIZE_BYTES
@@ -47,7 +47,7 @@ but nothing enforced "dashboards must bind to certified tables." The column
 semantics had drifted since.
 
 ## Dashboard
-"Catalog Governance" — unowned tables, stale views, dashboards bound to
+"Catalog Governance" - unowned tables, stale views, dashboards bound to
 uncertified sources, all in one governance dashboard (red = violation).
 
 ## Business Impact

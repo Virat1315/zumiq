@@ -1,4 +1,4 @@
-# ZUMIQ — Metadata Catalog & Data Product Registry
+# ZUMIQ - Metadata Catalog & Data Product Registry
 
 > What the platform knows about itself. Every table, every column, every
 > owner, every SLA, every dependency. This is what turns "some tables in
@@ -32,7 +32,7 @@ Data Product   = { core tables
                  , version + changelog
                  , consumers (known teams) }
 
-Example — "Enterprise P&L":
+Example - "Enterprise P&L":
   owner: Finance Data · SLA 7:30 ET · DQ floor 95
   tables: fct_transactions, dim_product, dim_business_unit, dim_region
   glossary: GMV, Net Revenue, Gross Margin, Net Margin Rate
@@ -59,7 +59,7 @@ Example — "Enterprise P&L":
 **PII/PCI/PHI flags** are auto-detected and can be overridden by stewards.
 RESTRICTED data is masked at the semantic layer and excluded from extracts.
 
-## 5. Glossary Governance — the anti-KPI-war mechanism
+## 5. Glossary Governance - the anti-KPI-war mechanism
 
 Every metric used in an executive dashboard must be a **CERTIFIED** glossary
 term with an explicit formula. Process:
@@ -86,7 +86,7 @@ term with an explicit formula. Process:
 - Certified products are versioned (`v1.0.0`, `v1.1.0`, `v2.0.0`).
 - Breaking changes require a deprecation notice ≥ 2 sprints before migration.
 - `metadata.table_catalog.version` + glossary `effective_from/to` support
-  "as-of" reporting — a dashboard is always bound to a versioned definition.
+  "as-of" reporting - a dashboard is always bound to a versioned definition.
 - Schema drift on a T1 table pages the owning team (alert severity HIGH).
 
 ## 7. Lineage: Impact Analysis in Practice

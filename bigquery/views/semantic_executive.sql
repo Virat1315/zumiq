@@ -1,14 +1,14 @@
 -- ============================================================================
--- ZUMIQ — Enterprise Data Intelligence Platform
+-- ZUMIQ - Enterprise Data Intelligence Platform
 -- semantic_executive.sql
 -- The ANALYTICS + SEMANTIC LAYER.
 -- These views are the ONLY place KPI formulas live. Dashboards never
--- re-derive metrics — they select from these certified views. This is the
+-- re-derive metrics - they select from these certified views. This is the
 -- mechanism that kills "different KPI definitions" across teams.
 -- ============================================================================
 
 -- ----------------------------------------------------------------------------
--- v_executive_daily — Executive Daily KPIs (grain: business_unit × region × date)
+-- v_executive_daily - Executive Daily KPIs (grain: business_unit × region × date)
 -- North Star metric: GMV. Guardrail: cost, freshness, DQ score.
 -- ----------------------------------------------------------------------------
 CREATE OR REPLACE VIEW `zumiq-prod.analytics_layer.v_executive_daily`
@@ -40,7 +40,7 @@ LEFT JOIN `zumiq-prod.core_layer.dim_product` AS p
 GROUP BY 1, 2, 3, 4, 5, 6;
 
 -- ----------------------------------------------------------------------------
--- v_executive_overview — the single view that powers the executive dashboard
+-- v_executive_overview - the single view that powers the executive dashboard
 -- ----------------------------------------------------------------------------
 CREATE OR REPLACE VIEW `zumiq-prod.analytics_layer.v_executive_overview`
 OPTIONS (description = 'One-stop executive view: GMV, revenue, margin, customers, DQ, freshness, cost.',
@@ -78,7 +78,7 @@ LEFT JOIN (
 ) AS c ON e.metric_date = c.job_date;
 
 -- ----------------------------------------------------------------------------
--- v_customer_360 — Customer lifecycle + health view (for CX teams)
+-- v_customer_360 - Customer lifecycle + health view (for CX teams)
 -- ----------------------------------------------------------------------------
 CREATE OR REPLACE VIEW `zumiq-prod.analytics_layer.v_customer_360`
 OPTIONS (description = 'Customer 360: lifetime value, recency/frequency, open cases, segment.',
@@ -128,7 +128,7 @@ LEFT JOIN open_cases AS oc ON c.customer_key = oc.customer_key
 WHERE c.is_current = TRUE;
 
 -- ----------------------------------------------------------------------------
--- v_platform_health — pipeline/quality/freshness combined health
+-- v_platform_health - pipeline/quality/freshness combined health
 -- ----------------------------------------------------------------------------
 CREATE OR REPLACE VIEW `zumiq-prod.analytics_layer.v_platform_health`
 OPTIONS (description = 'Platform health: pipeline success, DQ score, freshness SLA compliance.',

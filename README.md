@@ -1,18 +1,40 @@
-# ZUMIQ — Enterprise Data Intelligence Platform
+# ZUMIQ - Enterprise Data Intelligence Platform
 
 > **Tagline:** A cloud-native enterprise platform that transforms raw operational data into trusted, governed, analytics-ready data products for enterprise decision making.
 
 ZUMIQ is an internal enterprise data platform, designed the way a platform team inside a Fortune 100 company would build it. It is **not** a dashboard, **not** a Kaggle notebook, and **not** a toy ETL. It is a production-grade reference architecture for turning millions of daily operational events into governed, certified data products consumed by thousands of employees across business units, regions, and reporting teams.
 
-This repository is a complete, interview-ready portfolio artifact. Every design decision is justified by business reasoning, technical reasoning, scalability, and tradeoffs — because that is how a Principal Engineer reviews a production system.
+This repository is a complete, interview-ready portfolio artifact. Every design decision is justified by business reasoning, technical reasoning, scalability, and tradeoffs - because that is how a Principal Engineer reviews a production system.
 
 ---
 
 ## 0. Live Demo
 
-**Interactive frontend (GitHub Pages):** https://Virat1315.github.io/zumiq/
+**The platform:** https://zumiq.vercel.app
 
-A self-contained, dependency-free static site in [`web/`](web/) that demonstrates the platform end-to-end:
+A Next.js 16 + TypeScript + Tailwind application in [`platform/`](platform/). This is the product surface: the part an operator uses daily, rather than a report they read.
+
+| Route | What it does |
+|---|---|
+| **Platform Home** (`/`) | Enterprise KPI, quality, pipeline, freshness, cost and exposure in one triage view, with an open-incident queue and an audit feed |
+| **Incident Center** (`/incidents`) | The full incident register, filterable by severity, status, domain and free text across owners, KPIs and affected tables |
+| **Incident detail** (`/incidents/[id]`) | Owner, time to resolve, quantified exposure, root cause, resolution, a full timeline, and the KPIs and warehouse objects affected |
+| **Scenario Simulator** (`/simulator`) | Move an operating driver off its measured baseline and read the annualised revenue, cost, operational and customer effect, with every assumption shown |
+
+### Where the data comes from
+
+Everything routes through a single interface, [`DataAdapter`](platform/lib/data/types.ts). Two implementations satisfy it:
+
+- [`seeded.ts`](platform/lib/data/seeded.ts) is active by default. It needs no credentials and no billing, which is what lets the live URL work for anyone who opens it.
+- [`bigquery.ts`](platform/lib/data/bigquery.ts) carries the real SQL for each method, partition-filtered and reading pre-aggregated tables rather than raw facts. Setting `ZUMIQ_DATA_SOURCE=bigquery` selects it.
+
+No page or component knows which one it got. Pointing ZUMIQ at a warehouse is finishing one file, not refactoring an app.
+
+### The analytics demo
+
+**Static site (GitHub Pages):** https://Virat1315.github.io/zumiq/
+
+A self-contained, dependency-free static site in [`platform/public/web/`](platform/public/web/), also served by the platform at [`/web/index.html`](https://zumiq.vercel.app/web/index.html):
 
 | Page | What it shows |
 |---|---|
@@ -24,7 +46,7 @@ A self-contained, dependency-free static site in [`web/`](web/) that demonstrate
 | **Scenarios** | All 22 incident playbooks, filterable by domain and severity |
 | **Architecture** | Medallion layers, pipeline health, and the certified asset catalog |
 
-All data is generated client-side by a seeded PRNG — no backend, no trackers, no external CDNs — so it also opens from `file://`. The site is deployed from the repo root via [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) (Pages source: *GitHub Actions*).
+All data is generated client-side by a seeded PRNG - no backend, no trackers, no external CDNs - so it also opens from `file://`. The site is deployed from the repo root via [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) (Pages source: *GitHub Actions*).
 
 ---
 
@@ -182,12 +204,12 @@ bq query --use_legacy_sql=false < bigquery/views/semantic_executive.sql
 
 ## 7. Business Scenarios (Evidence of Impact)
 
-See [`docs/scenarios/`](docs/scenarios/) — 22 realistic incidents, each with the SQL investigation, root cause, dashboard, business impact, and recommendation. Example table of contents:
+See [`docs/scenarios/`](docs/scenarios/) - 22 realistic incidents, each with the SQL investigation, root cause, dashboard, business impact, and recommendation. Example table of contents:
 
 1. Executive P&L mismatch between finance and retail teams
 2. Unexpected 18% KPI drop in daily GMV
 3. Pipeline failure blocking the overnight batch
-4. Data freshness breach — Finance close delayed
+4. Data freshness breach - Finance close delayed
 5. Cloud cost spike ($14k/day → $41k/day)
 6. Duplicate transactions inflating revenue
 7. Metadata inconsistency breaking Tableau extracts
@@ -200,13 +222,13 @@ See [`docs/scenarios/`](docs/scenarios/) — 22 realistic incidents, each with t
 
 ## 8. Executive Dashboards (Tableau)
 
-See [`docs/tableau/`](docs/tableau/) — 10 dashboards, each with purpose, business question, KPI, calculation, target user, and the decision it enables. A Tableau workbook (`ZUMIQ_Executive_Overview.twb`) is included.
+See [`docs/tableau/`](docs/tableau/) - 10 dashboards, each with purpose, business question, KPI, calculation, target user, and the decision it enables. A Tableau workbook (`ZUMIQ_Executive_Overview.twb`) is included.
 
 ---
 
 ## 9. Product Thinking
 
-Everything product: vision, mission, personas, stakeholder map, journey maps, PRD, user stories, acceptance criteria, roadmap, sprint planning, RICE, tradeoffs, risk register, success metrics, and North Star — in [`docs/product/`](docs/product/).
+Everything product: vision, mission, personas, stakeholder map, journey maps, PRD, user stories, acceptance criteria, roadmap, sprint planning, RICE, tradeoffs, risk register, success metrics, and North Star - in [`docs/product/`](docs/product/).
 
 ---
 
@@ -218,12 +240,12 @@ Resume bullets, STAR stories, LinkedIn description, 5-minute recruiter demo, and
 
 ## 11. Design Principles (The Contract)
 
-1. **Raw is immutable.** Never edit raw_layer — reprocess to a new partition.
+1. **Raw is immutable.** Never edit raw_layer - reprocess to a new partition.
 2. **One conformed dimension per grain.** No duplicate customer keys.
 3. **Facts are partitioned by time, clustered by filter keys.**
 4. **Semantic definitions live once** (glossary + semantic layer), never re-derived in a dashboard.
 5. **Every certified data product has an owner and an SLA.**
-6. **Cost is a first-class citizen** — every query pattern has a cost budget.
+6. **Cost is a first-class citizen** - every query pattern has a cost budget.
 7. **DQ failures fail the pipeline loudly**, never silently.
 8. **Documentation is generated**, not written by hand.
 

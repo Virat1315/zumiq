@@ -1,19 +1,19 @@
-# ZUMIQ — STAR Stories (Behavioral Interview Arsenal)
+# ZUMIQ - STAR Stories (Behavioral Interview Arsenal)
 
 > Six stories, each a full STAR (Situation, Task, Action, Result), built on
 > the ZUMIQ scenarios. Use the one that matches the question asked.
 
 ---
 
-## Story 1 — "Killed the Revenue Definition War" (Scenario 01) · Collaboration/Influence
+## Story 1 - "Killed the Revenue Definition War" (Scenario 01) · Collaboration/Influence
 
 - **Situation:** The CEO's morning brief and the Retail BU report showed
   different GMV for the same day ($12.4M vs $9.8M). Execs spent 40+ minutes a
   week arguing about the number.
 - **Task:** Eliminate conflicting KPI definitions across 11 teams.
 - **Action:** I investigated and proved the gap was two different formulas
-  (refunds + channel filters), not a data bug. I built a **semantic layer** —
-  every metric defined once in certified views bound to a governance glossary —
+  (refunds + channel filters), not a data bug. I built a **semantic layer** -
+  every metric defined once in certified views bound to a governance glossary -
   and made dashboard certification mandatory: any dashboard whose metric
   doesn't match the certified formula is flagged. I added an automated
   consistency check that diffs every dashboard total against the certified view.
@@ -21,7 +21,7 @@
   executive meeting time freed. The board now trusts the number because the
   number is now *one thing*.
 
-## Story 2 — "Caught a $2.3M Revenue Inflation Before It Shipped" (Scenario 06) · Judgment/Analytical
+## Story 2 - "Caught a $2.3M Revenue Inflation Before It Shipped" (Scenario 06) · Judgment/Analytical
 
 - **Situation:** A load retry had committed twice; 201,043 duplicate
   transactions inflated a day's revenue by 4.7%.
@@ -35,7 +35,7 @@
   class of failure in minutes, not audits-later. Avoided a formal restatement
   (SOX exposure).
 
-## Story 3 — "Turned a $27k/Week Cost Spike into a 43% Reduction" (Scenario 05) · Ownership/Financial
+## Story 3 - "Turned a $27k/Week Cost Spike into a 43% Reduction" (Scenario 05) · Ownership/Financial
 
 - **Situation:** BigQuery spend jumped $14k → $41k/day; a single analyst's
   Tableau extract scanned the entire table every 30 minutes.
@@ -47,7 +47,7 @@
 - **Result:** Platform query spend fell 43% in two months; the runaway pattern
   is now auto-detected; cost/TB per team is visible monthly.
 
-## Story 4 — "Fixed Alert Fatigue to Save a 36-Hour Blind Window" (Scenario 17) · Process Improvement
+## Story 4 - "Fixed Alert Fatigue to Save a 36-Hour Blind Window" (Scenario 17) · Process Improvement
 
 - **Situation:** The DQ engine raised 40+ alerts a week; engineers ignored
   them, then missed a real failure for 36 hours.
@@ -60,21 +60,21 @@
 - **Result:** Alert noise cut ~70%; ack rate climbed above 90%; the blind-window
   failure mode is structurally gone.
 
-## Story 5 — "Launched a Feature Nobody Used — Then Fixed It With Users" (Scenario 19) · Product/Learning
+## Story 5 - "Launched a Feature Nobody Used - Then Fixed It With Users" (Scenario 19) · Product/Learning
 
 - **Situation:** The platform was technically healthy (DQ 98) but analyst
   self-serve queries fell 38%.
 - **Task:** Recover adoption on the platform's own product.
 - **Action:** I instrumented adoption (weekly active users, stale dashboards,
-  per-team usage), saw Marketing dropped 80%, then — critically — **talked to
+  per-team usage), saw Marketing dropped 80%, then - critically - **talked to
   12 analysts**. Interviews revealed slow catalog search and untrustworthy marts.
   I fixed discoverability (business-term search, glossary + lineage links),
   added a "first query in 5 minutes" onboarding, and recruited BU champions.
 - **Result:** Queries recovered and the north-star metric (Weekly Trusted
-  Decisions) is now tracked weekly, so a regression shows in days. The lesson —
-  data pointed, but conversations confirmed — became a platform principle.
+  Decisions) is now tracked weekly, so a regression shows in days. The lesson -
+  data pointed, but conversations confirmed - became a platform principle.
 
-## Story 6 — "Built the Platform Nobody Wanted to Hand-Build" (Across the Project) · Craft/Technical
+## Story 6 - "Built the Platform Nobody Wanted to Hand-Build" (Across the Project) · Craft/Technical
 
 - **Situation:** Data quality checks lived in random notebooks; cataloging was
   manual; lineage didn't exist; cost was a surprise at invoice time.

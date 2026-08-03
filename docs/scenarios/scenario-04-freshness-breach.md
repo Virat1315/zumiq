@@ -1,4 +1,4 @@
-# Scenario 04 — Data Freshness Breach Delaying Finance Close
+# Scenario 04 - Data Freshness Breach Delaying Finance Close
 
 **Severity:** P1 · **Domain:** Freshness / SLA
 
@@ -8,7 +8,7 @@ the P&L still showed June numbers. The freshness SLA (T1 = 07:30 ET) was
 breached, and nobody knew until Finance called.
 
 ## SQL Investigation
-Step 1 — how stale is each T1 table right now?
+Step 1 - how stale is each T1 table right now?
 
 ```sql
 SELECT c.table_id, c.sla_hours, c.data_owner,
@@ -24,7 +24,7 @@ ORDER BY 4 DESC;
 -- fct_transactions: 26h since load → BREACHED
 ```
 
-Step 2 — trace which hop broke (raw → staging → core):
+Step 2 - trace which hop broke (raw → staging → core):
 
 ```sql
 SELECT pipeline_name, status, run_started_at, run_finished_at, error_message
@@ -41,7 +41,7 @@ not ours). No freshness alert existed to escalate the breach; the platform
 only discovered it when Finance called.
 
 ## Dashboard
-"Freshness SLA" — every T1 table's age vs SLA with red breach bands, plus an
+"Freshness SLA" - every T1 table's age vs SLA with red breach bands, plus an
 escalation ladder status. This dashboard now sits on the platform team's wall.
 
 ## Business Impact

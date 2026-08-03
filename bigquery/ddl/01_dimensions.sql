@@ -1,5 +1,5 @@
 -- ============================================================================
--- ZUMIQ — Enterprise Data Intelligence Platform
+-- ZUMIQ - Enterprise Data Intelligence Platform
 -- 01_dimensions.sql
 -- Conformed dimensions. Includes:
 --   dim_date          (date spine / time dimension)
@@ -7,7 +7,7 @@
 --   dim_business_unit (BU: RTL, BNK, TEL, INS, MNF, LOG)
 --   dim_channel       (sales/service channel)
 --   dim_employee      (employee dimension, self-referencing for hierarchy)
---   dim_customer      (SCD Type 2 — see dml/scd2_customer.sql for load)
+--   dim_customer      (SCD Type 2 - see dml/scd2_customer.sql for load)
 --   dim_account       (SCD Type 2)
 --   dim_product       (SCD Type 2)
 --
@@ -20,7 +20,7 @@
 -- ============================================================================
 
 -- ----------------------------------------------------------------------------
--- dim_date — the time dimension (populated by stored procedure sp_load_dim_date)
+-- dim_date - the time dimension (populated by stored procedure sp_load_dim_date)
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `zumiq-prod.core_layer.dim_date`
 (
@@ -51,7 +51,7 @@ OPTIONS (description = 'Conformed time dimension (ZUMIQ fiscal calendar starts F
          labels = [("layer", "core"), ("criticality", "t1")]);
 
 -- ----------------------------------------------------------------------------
--- dim_region — region / country / timezone / currency
+-- dim_region - region / country / timezone / currency
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `zumiq-prod.core_layer.dim_region`
 (
@@ -100,7 +100,7 @@ OPTIONS (description = 'Conformed channel dimension.',
          labels = [("layer", "core")]);
 
 -- ----------------------------------------------------------------------------
--- dim_employee — with self-referencing manager hierarchy
+-- dim_employee - with self-referencing manager hierarchy
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `zumiq-prod.core_layer.dim_employee`
 (
@@ -121,7 +121,7 @@ OPTIONS (description = 'Conformed employee dimension with manager hierarchy.',
          labels = [("layer", "core")]);
 
 -- ----------------------------------------------------------------------------
--- dim_customer — SCD Type 2
+-- dim_customer - SCD Type 2
 -- Grain: one row per customer per valid version
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `zumiq-prod.core_layer.dim_customer`
@@ -129,7 +129,7 @@ CREATE TABLE IF NOT EXISTS `zumiq-prod.core_layer.dim_customer`
   customer_key      INT64   NOT NULL,
   customer_id       STRING  NOT NULL,     -- natural id from CRM
   full_name         STRING  NOT NULL,
-  email             STRING,               -- PII — stored as hashed in prod, restricted
+  email             STRING,               -- PII - stored as hashed in prod, restricted
   phone             STRING,               -- PII
   customer_segment  STRING  NOT NULL,     -- 'Enterprise','Mid-Market','SMB'
   tier              STRING  NOT NULL,     -- 'Platinum','Gold','Silver','Bronze'
@@ -149,11 +149,11 @@ CREATE TABLE IF NOT EXISTS `zumiq-prod.core_layer.dim_customer`
 )
 PARTITION BY DATE(valid_from)
 CLUSTER BY customer_id, is_current
-OPTIONS (description = 'Conformed customer dimension — SCD Type 2, partitioned by valid_from.',
+OPTIONS (description = 'Conformed customer dimension - SCD Type 2, partitioned by valid_from.',
          labels = [("layer", "core"), ("criticality", "t1")]);
 
 -- ----------------------------------------------------------------------------
--- dim_account — SCD Type 2
+-- dim_account - SCD Type 2
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `zumiq-prod.core_layer.dim_account`
 (
@@ -176,11 +176,11 @@ CREATE TABLE IF NOT EXISTS `zumiq-prod.core_layer.dim_account`
 )
 PARTITION BY DATE(valid_from)
 CLUSTER BY customer_key, account_id
-OPTIONS (description = 'Conformed account dimension — SCD Type 2.',
+OPTIONS (description = 'Conformed account dimension - SCD Type 2.',
          labels = [("layer", "core")]);
 
 -- ----------------------------------------------------------------------------
--- dim_product — SCD Type 2
+-- dim_product - SCD Type 2
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `zumiq-prod.core_layer.dim_product`
 (
@@ -202,7 +202,7 @@ CREATE TABLE IF NOT EXISTS `zumiq-prod.core_layer.dim_product`
 )
 PARTITION BY DATE(valid_from)
 CLUSTER BY product_category, product_id
-OPTIONS (description = 'Conformed product dimension — SCD Type 2.',
+OPTIONS (description = 'Conformed product dimension - SCD Type 2.',
          labels = [("layer", "core")]);
 
 -- ============================================================================

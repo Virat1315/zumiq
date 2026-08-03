@@ -1,4 +1,4 @@
-# ZUMIQ — RICE Prioritization & Tradeoffs
+# ZUMIQ - RICE Prioritization & Tradeoffs
 
 ## 1. RICE Scores for the Backlog (top candidates)
 
@@ -29,32 +29,32 @@
 
 ## 3. Key Tradeoffs (documented decisions)
 
-### Tradeoff A — Central platform vs full data mesh
+### Tradeoff A - Central platform vs full data mesh
 **Chose:** centralized platform + domain ownership.
 **Cost:** BU teams can't fully control their own pipelines.
 **Win:** consistent governance, cost control, faster enterprise-wide value.
 **Revisit:** when domain teams are mature enough to self-govern.
 
-### Tradeoff B — Tableau vs Looker vs Power BI
+### Tradeoff B - Tableau vs Looker vs Power BI
 **Chose:** Tableau for certified exec/BI; Looker Studio later for light users.
 **Cost:** two tools to support (small).
 **Win:** Tableau's certified-workbook governance + mobile for execs; Looker
 Studio free self-serve.
 **Revisit:** consolidate if Looker Studio adoption crosses 40% of queries.
 
-### Tradeoff C — Batch (hourly) vs true streaming
+### Tradeoff C - Batch (hourly) vs true streaming
 **Chose:** batch for facts (nightly), streaming for ops events only.
 **Cost:** exec KPIs aren't real-time.
 **Win:** cost discipline, simpler SCD2, DQ checkpoint model.
 **Revisit:** streaming anomaly detection in Q4.
 
-### Tradeoff D — On-demand vs flat-rate BigQuery
+### Tradeoff D - On-demand vs flat-rate BigQuery
 **Chose:** on-demand + reservations for steady load.
 **Cost:** manual FinOps review.
 **Win:** no idle capacity spend; anomaly alerts catch spikes.
 **Revisit:** when steady TB/month crosses the flat-rate breakeven.
 
-### Tradeoff E — Automated DQ vs human-reviewed metadata
+### Tradeoff E - Automated DQ vs human-reviewed metadata
 **Chose:** automated catalog + human review for T1 only.
 **Cost:** occasional wrong auto-classification (caught by DLP/audits).
 **Win:** 100% coverage at near-zero effort; humans only on what matters.

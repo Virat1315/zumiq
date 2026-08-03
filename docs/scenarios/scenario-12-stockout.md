@@ -1,4 +1,4 @@
-# Scenario 12 — Stockout Eating Revenue (Inventory Receipts)
+# Scenario 12 - Stockout Eating Revenue (Inventory Receipts)
 
 **Severity:** P2 · **Domain:** Operations
 
@@ -8,7 +8,7 @@ Purchasing blamed demand; the store blamed supply. The truth was in the
 streaming inventory data nobody was watching.
 
 ## SQL Investigation
-Step 1 — find the SKU and its daily sales trend:
+Step 1 - find the SKU and its daily sales trend:
 
 ```sql
 SELECT t.txn_date, p.product_id,
@@ -24,7 +24,7 @@ GROUP BY 1, 2 ORDER BY 1;
 -- Sales collapsed from Jul 09 onwards
 ```
 
-Step 2 — check inventory receipts (streaming table) for the same SKU:
+Step 2 - check inventory receipts (streaming table) for the same SKU:
 
 ```sql
 SELECT received_date, warehouse_code,
@@ -38,7 +38,7 @@ GROUP BY 1, 2 ORDER BY 1;
 -- Zero receipts after Jul 09 → the warehouse ran out of stock
 ```
 
-Step 3 — was it a supply delay or a forecasting miss? (lead-time vs receipts)
+Step 3 - was it a supply delay or a forecasting miss? (lead-time vs receipts)
 
 ```sql
 SELECT
@@ -54,21 +54,21 @@ GROUP BY 1 ORDER BY 3 DESC;
 
 ## Root Cause
 A logistics carrier missed three scheduled deliveries (their issue), the
-warehouse hit zero stock, and nobody monitored `inventory_receipts` — the
+warehouse hit zero stock, and nobody monitored `inventory_receipts` - the
 receipt data existed but had no dashboard and no alert. Purchasing reordered
 10 days late.
 
 ## Dashboard
-"Inventory Receipts Monitor" — receipts vs forecast per SKU/warehouse with a
+"Inventory Receipts Monitor" - receipts vs forecast per SKU/warehouse with a
 "days of cover" gauge; a SKU below 7 days of cover pages planning.
 
 ## Business Impact
 - ~$1.4M lost revenue on one SKU over 5 days.
 - Overnight shipping + expedite fees to recover.
-- Demand/supply blame war in the BU — a data problem, not a people problem.
+- Demand/supply blame war in the BU - a data problem, not a people problem.
 
 ## Recommendation
-1. **Receipt monitoring dashboard** (this table was dark data — now the
+1. **Receipt monitoring dashboard** (this table was dark data - now the
    warehouse team's home screen).
 2. **"Days of cover" alert**: streaming receipts + dim_product → below
    threshold → pager.

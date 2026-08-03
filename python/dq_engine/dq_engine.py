@@ -1,11 +1,11 @@
 """
-ZUMIQ — Data Quality Engine
+ZUMIQ - Data Quality Engine
 ================================
 The automated DQ framework that monitors every certified data product.
 
 It runs an extensible suite of SQL checks against BigQuery, scores each
 table on the enterprise DQ model, computes the Enterprise Data Quality Score,
-performs root-cause analysis, and raises alerts — fully automated.
+performs root-cause analysis, and raises alerts - fully automated.
 
 Architecture
 ------------
@@ -186,7 +186,7 @@ class DataQualityEngine:
         try:
             rows = list(self.client.query(sql).result())
             row = rows[0] if rows else {}
-        except Exception as exc:  # noqa: BLE001 — a failing check ≠ engine crash
+        except Exception as exc:  # noqa: BLE001 - a failing check ≠ engine crash
             return CheckResult(
                 rule_id=rule["rule_id"], run_id=run_id,
                 run_timestamp=datetime.utcnow(),

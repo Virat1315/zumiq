@@ -1,14 +1,14 @@
-# Scenario 13 — Dashboard Latency from Full-Table Scans
+# Scenario 13 - Dashboard Latency from Full-Table Scans
 
 **Severity:** P2 · **Domain:** Performance
 
 ## Problem
 The executive dashboard took 40–60 seconds to load in the morning, and the
-"30-day GMV" tile sometimes timed out. Executives stopped using it — the most
+"30-day GMV" tile sometimes timed out. Executives stopped using it - the most
 important dashboard in the company was abandoned for performance.
 
 ## SQL Investigation
-Step 1 — profile the dashboard's queries in cost telemetry:
+Step 1 - profile the dashboard's queries in cost telemetry:
 
 ```sql
 SELECT
@@ -23,7 +23,7 @@ GROUP BY 1;
 -- Each refresh scanned ~600 GB (whole fct_transactions, all partitions)
 ```
 
-Step 2 — prove the partition filter is missing:
+Step 2 - prove the partition filter is missing:
 
 ```sql
 SELECT job_id, ROUND(bytes_processed / 1e9, 2) AS gb,
@@ -34,7 +34,7 @@ WHERE query_id = 'exec_dash'
 -- table_reference shows fct_transactions with NO date predicate
 ```
 
-Step 3 — what would the same query cost with partitioning? (dry-run)
+Step 3 - what would the same query cost with partitioning? (dry-run)
 
 ```bash
 # Partition-pruned: filter last 30 days → ~30 partitions → ~50 GB → <5s
@@ -49,7 +49,7 @@ date filter, and was never migrated to the certified semantic view. BigQuery
 on-demand pricing + full scans = slow AND expensive.
 
 ## Dashboard
-"Dashboard Performance" — per-dashboard scan size, query cost, and p95
+"Dashboard Performance" - per-dashboard scan size, query cost, and p95
 latency; red flags for scans > 100 GB.
 
 ## Business Impact

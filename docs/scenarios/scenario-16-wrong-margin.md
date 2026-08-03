@@ -1,4 +1,4 @@
-# Scenario 16 — Wrong Product Margin in a Restatement
+# Scenario 16 - Wrong Product Margin in a Restatement
 
 **Severity:** P1 · **Domain:** Accuracy
 
@@ -8,7 +8,7 @@ rate** for a profitable product line. The restatement was about to ship with
 wrong numbers.
 
 ## SQL Investigation
-Step 1 — find the bad margin:
+Step 1 - find the bad margin:
 
 ```sql
 SELECT p.product_id, p.list_price, p.cost_price,
@@ -20,7 +20,7 @@ WHERE p.is_current = TRUE
 -- SKU-771204: cost $490 vs list $325 → margin = −50.8%
 ```
 
-Step 2 — did the restatement use the right version of the product? (SCD2 as-of)
+Step 2 - did the restatement use the right version of the product? (SCD2 as-of)
 
 ```sql
 -- The restatement joined the CURRENT product version, not the version at sale time:
@@ -45,7 +45,7 @@ The restatement used a **current-version join** instead of a **point-in-time
 restated margin was wrong. This is the classic SCD2 misuse.
 
 ## Dashboard
-"Margin Accuracy" — margin by product with version-change flags; any product
+"Margin Accuracy" - margin by product with version-change flags; any product
 whose price changed mid-quarter is flagged for as-of review.
 
 ## Business Impact
@@ -57,7 +57,7 @@ whose price changed mid-quarter is flagged for as-of review.
    `txn_timestamp BETWEEN valid_from AND valid_to`.
 2. **DQ ACCURACY/CONSISTENCY check**: restated margin vs certified margin per
    product must match within tolerance.
-3. **Glossary rule**: "Gross Margin uses point-in-time product margin" —
+3. **Glossary rule**: "Gross Margin uses point-in-time product margin" -
    certified + enforced in the semantic view `v_executive_daily` (already uses
    `is_current`; finance marts now use as-of).
 4. **Engineering guard**: the restatement stored procedure logs which version

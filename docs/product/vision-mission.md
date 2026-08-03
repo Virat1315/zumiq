@@ -1,19 +1,19 @@
-# ZUMIQ — Vision, Mission & Product Strategy
+# ZUMIQ - Vision, Mission & Product Strategy
 
 ## Vision
 Every employee in the enterprise makes decisions on **trusted, governed,
-real-time** data — where the right data product is available to the right
+real-time** data - where the right data product is available to the right
 person, in the right form, in seconds, and where "which number is right?" is
 a question that no longer exists.
 
 ## Mission
 Transform raw operational data into **certified, owned, and SLA-bound data
 products** through a cloud-native platform with automated quality, metadata,
-lineage, and cost governance — so business teams ship faster and decide with
+lineage, and cost governance - so business teams ship faster and decide with
 confidence.
 
 ## North Star Metric
-**Weekly Trusted Decisions (WTD)** — the number of dashboard/report views and
+**Weekly Trusted Decisions (WTD)** - the number of dashboard/report views and
 API calls that consume a **certified** data product in a week.
 
 ```
@@ -57,16 +57,16 @@ its keep.
 
 ## Target Consumers (who we build for)
 
-1. **Executive leadership** — daily brief, one version of the truth.
-2. **BU heads & finance** — P&L, forecasts, restatements.
-3. **Analysts & analytics engineers** — governed self-serve, certified marts.
-4. **Data engineers & platform** — clean, observable pipelines.
-5. **CX / Ops / FinOps teams** — SLA boards, health dashboards.
+1. **Executive leadership** - daily brief, one version of the truth.
+2. **BU heads & finance** - P&L, forecasts, restatements.
+3. **Analysts & analytics engineers** - governed self-serve, certified marts.
+4. **Data engineers & platform** - clean, observable pipelines.
+5. **CX / Ops / FinOps teams** - SLA boards, health dashboards.
 
 ## Positioning Statement
 
 For enterprise teams drowning in untrusted spreadsheets and competing numbers,
 ZUMIQ is the internal data intelligence platform that turns raw operational
-data into certified data products — unlike ad-hoc dashboards, ZUMIQ makes
+data into certified data products - unlike ad-hoc dashboards, ZUMIQ makes
 quality, lineage, ownership, and cost visible and automatic, so decisions are
 made on data that can be defended.

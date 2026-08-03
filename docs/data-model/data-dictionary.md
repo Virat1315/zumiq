@@ -1,11 +1,11 @@
-# ZUMIQ — Data Dictionary
+# ZUMIQ - Data Dictionary
 
 > Canonical definitions for every table and key column. This is the contract
 > between the platform and its consumers. Definitions here are authoritative;
 > anything else is stale. Managed automatically by the metadata agent plus
 > human review for T1 tables.
 
-## Core Layer — Dimensions
+## Core Layer - Dimensions
 
 ### dim_date
 | Column | Type | Notes |
@@ -60,7 +60,7 @@ WEB / MOBILE / CALL / BRANCH / POS / API / PARTNER.
 
 ---
 
-## Core Layer — Facts
+## Core Layer - Facts
 
 ### fct_transactions
 **Grain:** 1 row per transaction · **Partition:** txn_date · **Cluster:** customer_key, region_key, account_key
@@ -68,10 +68,10 @@ WEB / MOBILE / CALL / BRANCH / POS / API / PARTNER.
 | Column | Type | Notes |
 |---|---|---|
 | txn_key | INT64 | Surrogate PK |
-| txn_id | STRING | Natural id (UNIQUE — DQ check) |
+| txn_id | STRING | Natural id (UNIQUE - DQ check) |
 | txn_type | STRING | DEPOSIT/WITHDRAWAL/PAYMENT/TRANSFER/FEE/REFUND/CHARGEBACK |
 | amount | NUMERIC | Local currency |
-| amount_usd | NUMERIC | amount × fx_rate — standardized for global consolidation |
+| amount_usd | NUMERIC | amount × fx_rate - standardized for global consolidation |
 | status | STRING | POSTED/PENDING/REVERSED/FAILED |
 | is_reversal | BOOL | True when this txn reverses another |
 | dedup_key | STRING | Dedup guard |

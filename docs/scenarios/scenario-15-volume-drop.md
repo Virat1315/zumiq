@@ -1,14 +1,14 @@
-# Scenario 15 — Ops Event Volume Drop: Source Feed Down
+# Scenario 15 - Ops Event Volume Drop: Source Feed Down
 
 **Severity:** P1 · **Domain:** Reliability
 
 ## Problem
 The operations health dashboard showed an unusually *calm* day: event volume
-was down 82%. The ops team almost enjoyed it — until they realized it meant
+was down 82%. The ops team almost enjoyed it - until they realized it meant
 the streaming feed was dead, not that the systems were healthy.
 
 ## SQL Investigation
-Step 1 — confirm the volume drop:
+Step 1 - confirm the volume drop:
 
 ```sql
 WITH vol AS (
@@ -25,7 +25,7 @@ ORDER BY 1 DESC LIMIT 10;
 -- Jul 14: 1.1M events → 198k (ratio 0.18)
 ```
 
-Step 2 — is it all sources or one source?
+Step 2 - is it all sources or one source?
 
 ```sql
 SELECT source_system, COUNT(*) AS events
@@ -35,7 +35,7 @@ GROUP BY 1 ORDER BY 2 DESC;
 -- GATEWAY events missing entirely on Jul 14 → that feed is down
 ```
 
-Step 3 — correlate with pipeline runs (did the streaming sink fail?):
+Step 3 - correlate with pipeline runs (did the streaming sink fail?):
 
 ```sql
 SELECT pipeline_name, status, run_date, error_message
@@ -50,10 +50,10 @@ ORDER BY run_started_at;
 The streaming worker (Dataflow) crashed during a deployment; the Pub/Sub
 subscription had no active puller for ~5 hours, so messages were backlogged
 (not lost, but 5h behind). Because *fewer events* looks like "a quiet day,"
-the ops team didn't notice — no volume rule existed on the streaming table.
+the ops team didn't notice - no volume rule existed on the streaming table.
 
 ## Dashboard
-"Event Volume Monitor" — per-source event counts vs trailing average with the
+"Event Volume Monitor" - per-source event counts vs trailing average with the
 VOLUME drop flag (Q101/Q069). This incident turned it into a pager condition.
 
 ## Business Impact

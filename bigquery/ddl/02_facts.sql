@@ -1,5 +1,5 @@
 -- ============================================================================
--- ZUMIQ — Enterprise Data Intelligence Platform
+-- ZUMIQ - Enterprise Data Intelligence Platform
 -- 02_facts.sql
 -- Fact tables. Design rules:
 --   * Facts are PARTITIONED by time and CLUSTERED by the highest-cardinality
@@ -12,7 +12,7 @@
 -- ============================================================================
 
 -- ----------------------------------------------------------------------------
--- fct_transactions — Grain: 1 row per posted transaction
+-- fct_transactions - Grain: 1 row per posted transaction
 -- Partition: txn_date | Cluster: customer_key, region_key, account_key
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `zumiq-prod.core_layer.fct_transactions`
@@ -41,11 +41,11 @@ CREATE TABLE IF NOT EXISTS `zumiq-prod.core_layer.fct_transactions`
 )
 PARTITION BY txn_date
 CLUSTER BY customer_key, region_key, account_key
-OPTIONS (description = 'Enterprise transaction fact — grain: 1 row per transaction. Partitioned by txn_date, clustered by customer/region/account.',
+OPTIONS (description = 'Enterprise transaction fact - grain: 1 row per transaction. Partitioned by txn_date, clustered by customer/region/account.',
          labels = [("layer", "core"), ("criticality", "t1")]);
 
 -- ----------------------------------------------------------------------------
--- fct_operations_events — Grain: 1 row per operational event (streaming sink)
+-- fct_operations_events - Grain: 1 row per operational event (streaming sink)
 -- Partition: event_date | Cluster: source_system, event_type
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `zumiq-prod.core_layer.fct_operations_events`
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `zumiq-prod.core_layer.fct_operations_events`
   latency_ms       INT64    NOT NULL,          -- latency in ms (0 for batch events)
   region_key       INT64    NOT NULL,
   bu_key           INT64    NOT NULL,
-  customer_key     INT64,                      -- nullable — not all events have a customer
+  customer_key     INT64,                      -- nullable - not all events have a customer
   payload          JSON,                       -- event payload (JSON functions used heavily)
   dedup_key        STRING   NOT NULL,
   etl_batch_id     INT64    NOT NULL,
@@ -68,11 +68,11 @@ CREATE TABLE IF NOT EXISTS `zumiq-prod.core_layer.fct_operations_events`
 )
 PARTITION BY event_date
 CLUSTER BY source_system, event_type, service_name
-OPTIONS (description = 'Operational event fact (streaming) — grain: 1 row per event. Partitioned daily, clustered by source/type/service.',
+OPTIONS (description = 'Operational event fact (streaming) - grain: 1 row per event. Partitioned daily, clustered by source/type/service.',
          labels = [("layer", "core"), ("criticality", "t1")]);
 
 -- ----------------------------------------------------------------------------
--- fct_support_cases — Grain: 1 row per support case
+-- fct_support_cases - Grain: 1 row per support case
 -- Partition: opened_date | Cluster: customer_key, case_type
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `zumiq-prod.core_layer.fct_support_cases`
@@ -100,11 +100,11 @@ CREATE TABLE IF NOT EXISTS `zumiq-prod.core_layer.fct_support_cases`
 )
 PARTITION BY opened_date
 CLUSTER BY customer_key, case_type, priority
-OPTIONS (description = 'Customer support case fact — grain: 1 case. Partitioned by opened_date, clustered by customer/case_type/priority.',
+OPTIONS (description = 'Customer support case fact - grain: 1 case. Partitioned by opened_date, clustered by customer/case_type/priority.',
          labels = [("layer", "core")]);
 
 -- ----------------------------------------------------------------------------
--- fct_employee_activity — Grain: 1 row per platform interaction
+-- fct_employee_activity - Grain: 1 row per platform interaction
 -- Partition: activity_date | Cluster: app_name, activity_type
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `zumiq-prod.core_layer.fct_employee_activity`
@@ -125,14 +125,14 @@ CREATE TABLE IF NOT EXISTS `zumiq-prod.core_layer.fct_employee_activity`
 )
 PARTITION BY activity_date
 CLUSTER BY app_name, employee_key
-OPTIONS (description = 'Employee platform activity fact — enables product analytics on ZUMIQ itself (adoption, queries, dashboards).',
+OPTIONS (description = 'Employee platform activity fact - enables product analytics on ZUMIQ itself (adoption, queries, dashboards).',
          labels = [("layer", "core")]);
 
 -- ============================================================================
--- OPS / COST facts (platform telemetry — stored in ops and cost datasets)
+-- OPS / COST facts (platform telemetry - stored in ops and cost datasets)
 -- ============================================================================
 
--- fct_pipeline_runs — orchestration observability
+-- fct_pipeline_runs - orchestration observability
 CREATE TABLE IF NOT EXISTS `zumiq-prod.ops.fct_pipeline_runs`
 (
   run_id            STRING   NOT NULL,
@@ -155,10 +155,10 @@ CREATE TABLE IF NOT EXISTS `zumiq-prod.ops.fct_pipeline_runs`
 )
 PARTITION BY run_date
 CLUSTER BY pipeline_name, status
-OPTIONS (description = 'Pipeline run observability fact — freshness SLAs, failure detection, volume drift.',
+OPTIONS (description = 'Pipeline run observability fact - freshness SLAs, failure detection, volume drift.',
          labels = [("layer", "ops"), ("criticality", "t1")]);
 
--- fct_query_cost — BigQuery job telemetry (source: INFORMATION_SCHEMA.JOBS_BY_PROJECT / billing export)
+-- fct_query_cost - BigQuery job telemetry (source: INFORMATION_SCHEMA.JOBS_BY_PROJECT / billing export)
 CREATE TABLE IF NOT EXISTS `zumiq-prod.cost.fct_query_cost`
 (
   job_id           STRING   NOT NULL,
@@ -180,7 +180,7 @@ CREATE TABLE IF NOT EXISTS `zumiq-prod.cost.fct_query_cost`
 )
 PARTITION BY job_date
 CLUSTER BY user_email, dataset_id
-OPTIONS (description = 'BigQuery query cost fact — cost governance, top-spender analysis, budget alerting.',
+OPTIONS (description = 'BigQuery query cost fact - cost governance, top-spender analysis, budget alerting.',
          labels = [("layer", "cost"), ("criticality", "t1")]);
 
 -- ============================================================================

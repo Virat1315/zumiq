@@ -1,8 +1,8 @@
 -- ============================================================================
--- ZUMIQ — Enterprise Data Intelligence Platform
+-- ZUMIQ - Enterprise Data Intelligence Platform
 -- 00_datasets.sql
 -- Creates the GCP project dataset topology.
--- BigQuery has no "CREATE DATABASE" — datasets are the top-level containers.
+-- BigQuery has no "CREATE DATABASE" - datasets are the top-level containers.
 -- Environment: PROD (us-central1, regional location). Each layer is a dataset.
 -- ============================================================================
 --

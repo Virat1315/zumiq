@@ -1,5 +1,5 @@
 -- ============================================================================
--- ZUMIQ — Enterprise Data Intelligence Platform
+-- ZUMIQ - Enterprise Data Intelligence Platform
 -- scd2_customer.sql
 -- SCD Type 2 load for dim_customer using a single MERGE.
 --
@@ -81,7 +81,7 @@ WHEN MATCHED AND target.record_hash != source.record_hash THEN
 --     second statement for clarity; production wraps both in a procedure.)
 ;
 
--- Step 3 (new versions) — executed inside sp_scd2_load_customer in production.
+-- Step 3 (new versions) - executed inside sp_scd2_load_customer in production.
 -- The two MERGE/INSERT pattern keeps each statement readable; the stored
 -- procedure wraps them in a single transaction-equivalent batch.
 INSERT INTO `zumiq-prod.core_layer.dim_customer`

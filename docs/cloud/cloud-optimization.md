@@ -1,4 +1,4 @@
-# ZUMIQ — Cloud Optimization (BigQuery Cost & Performance)
+# ZUMIQ - Cloud Optimization (BigQuery Cost & Performance)
 
 > The finance-and-engineering view of the platform: how BigQuery pricing works,
 > and every lever ZUMIQ pulls to keep cost low and dashboards fast.
@@ -7,7 +7,7 @@
 
 **Storage:** you pay for compressed bytes stored.
 - Active storage: `$0.02/GB/month`
-- Long-term storage (tables untouched 90 days): `$0.01/GB/month` — automatic.
+- Long-term storage (tables untouched 90 days): `$0.01/GB/month` - automatic.
 - So our `raw_layer` (immutable, untouched) is automatically half-price.
 
 **Compute:**
@@ -18,7 +18,7 @@
   reservation for the nightly batch (ADR-006).
 
 **What costs money (ranked):**
-1. Full-table scans (the #1 sin) — every partition read.
+1. Full-table scans (the #1 sin) - every partition read.
 2. Repeated identical queries (dashboard refreshes).
 3. Wide `SELECT *` (columnar storage: more columns = more bytes).
 4. Complex `JOIN`/`DISTINCT` over big tables (slot time).
@@ -30,7 +30,7 @@
 - 30-day scan (predicate pruned): ~1.6 GB → **~$10/query**.
 - 7-day scan: ~0.4 GB → **~$2.40/query**.
 
-Partitioning turns a "$120 dashboard refresh" into a "$2 dashboard refresh" —
+Partitioning turns a "$120 dashboard refresh" into a "$2 dashboard refresh" -
 12–60× savings with zero code changes beyond adding the filter.
 
 ## 3. Why Clustering Matters (the math)
@@ -88,7 +88,7 @@ it, so:
 - **$27k/week runaway query** now impossible (budget + alert + dry-run gate).
 - Cost/TB per team **visible monthly**; anomaly MTTR < 1h.
 
-## 8. Interview Narrative — "Tell me how you think about cloud cost"
+## 8. Interview Narrative - "Tell me how you think about cloud cost"
 
 1. Cost = bytes read × rate → so every optimization is "read fewer bytes."
 2. Partitioning + clustering = the highest-leverage, lowest-effort lever.

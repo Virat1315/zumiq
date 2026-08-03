@@ -1,14 +1,14 @@
-# Scenario 19 — ZUMIQ Self-Serve Adoption Drop
+# Scenario 19 - ZUMIQ Self-Serve Adoption Drop
 
 **Severity:** P2 · **Domain:** Product Analytics
 
 ## Problem
-The platform is technically healthy (DQ 98, dashboards fast) — but analysts'
+The platform is technically healthy (DQ 98, dashboards fast) - but analysts'
 weekly self-serve queries fell 38% over a month. The Data PM had a "healthy
 system, dying product" warning. Why did people stop using it?
 
 ## SQL Investigation
-Step 1 — confirm the adoption drop by activity type:
+Step 1 - confirm the adoption drop by activity type:
 
 ```sql
 SELECT DATE_TRUNC(activity_date, WEEK(MONDAY)) AS week_start,
@@ -21,7 +21,7 @@ GROUP BY 1 ORDER BY 1;
 -- Queries down 38%; views flat; active users down 22%
 ```
 
-Step 2 — which dashboards/tables got abandoned (staleness)?
+Step 2 - which dashboards/tables got abandoned (staleness)?
 
 ```sql
 SELECT resource_name,
@@ -35,7 +35,7 @@ GROUP BY 1 ORDER BY 3 DESC;
 -- Three "self-serve" marts never queried in 30 days
 ```
 
-Step 3 — is the drop driven by specific teams (segmentation)?
+Step 3 - is the drop driven by specific teams (segmentation)?
 
 ```sql
 SELECT e.department, COUNT(DISTINCT a.employee_key) AS users,
@@ -57,7 +57,7 @@ and went back to their spreadsheets. Adoption is a product problem, not a
 technology problem.
 
 ## Dashboard
-"Product Adoption" — weekly active users, queries, dashboard views, stale
+"Product Adoption" - weekly active users, queries, dashboard views, stale
 dashboards, by team. This is the platform's own north-star tracker (WTD).
 
 ## Business Impact
@@ -72,5 +72,5 @@ dashboards, by team. This is the platform's own north-star tracker (WTD).
    mart links its glossary + lineage + example queries.
 3. **Onboarding**: "first query in 5 minutes" for new analysts; champions in
    each BU.
-4. **WTD metric now tracked weekly** — the north star makes adoption regressions
+4. **WTD metric now tracked weekly** - the north star makes adoption regressions
    visible in days, not months.

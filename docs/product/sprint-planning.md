@@ -1,14 +1,14 @@
-# ZUMIQ — Sprint Planning & Execution (working as a PM)
+# ZUMIQ - Sprint Planning & Execution (working as a PM)
 
 ## Sprint Cadence
 2-week sprints · 4-person squad (Data PM, 2 Analytics/Data Engineers, Data
 Quality analyst) · ceremonies: planning, daily standup, review, retro.
 
-## Example Sprint — S7 "Certify the Customer 360 Data Product"
+## Example Sprint - S7 "Certify the Customer 360 Data Product"
 
 ### Sprint Goal
 Ship Customer 360 as a **certified** data product with RFM segmentation and a
-documented DQ floor — so CX Analytics can retire their manual Excel workbook.
+documented DQ floor - so CX Analytics can retire their manual Excel workbook.
 
 ### Backlog → Commitment (what we pulled & why)
 | Story | Points | Acceptance criteria |

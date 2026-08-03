@@ -1,5 +1,5 @@
 -- ============================================================================
--- ZUMIQ — Enterprise Data Intelligence Platform
+-- ZUMIQ - Enterprise Data Intelligence Platform
 -- 03_metadata_and_quality.sql
 -- Cross-cutting tables: metadata catalog + data quality + governance + glossary.
 -- These make the platform self-describing and audit-able, which is the
@@ -7,7 +7,7 @@
 -- ============================================================================
 
 -- ----------------------------------------------------------------------------
--- metadata.table_catalog — the "data product catalog" (one row per table)
+-- metadata.table_catalog - the "data product catalog" (one row per table)
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `zumiq-prod.metadata.table_catalog`
 (
@@ -40,7 +40,7 @@ OPTIONS (description = 'Data product catalog: ownership, SLAs, classification, c
          labels = [("layer", "metadata")]);
 
 -- ----------------------------------------------------------------------------
--- metadata.column_catalog — column descriptions + sensitivity (auto-scanned)
+-- metadata.column_catalog - column descriptions + sensitivity (auto-scanned)
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `zumiq-prod.metadata.column_catalog`
 (
@@ -61,7 +61,7 @@ OPTIONS (description = 'Column-level catalog with sensitivity classification and
          labels = [("layer", "metadata")]);
 
 -- ----------------------------------------------------------------------------
--- metadata.lineage_edges — column-level lineage
+-- metadata.lineage_edges - column-level lineage
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `zumiq-prod.metadata.lineage_edges`
 (
@@ -78,7 +78,7 @@ OPTIONS (description = 'Column-level lineage graph edges.',
          labels = [("layer", "metadata")]);
 
 -- ----------------------------------------------------------------------------
--- metadata.business_glossary — one definition per metric term (single source of truth)
+-- metadata.business_glossary - one definition per metric term (single source of truth)
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `zumiq-prod.metadata.business_glossary`
 (
@@ -96,11 +96,11 @@ CREATE TABLE IF NOT EXISTS `zumiq-prod.metadata.business_glossary`
   effective_from    TIMESTAMP NOT NULL,
   effective_to      TIMESTAMP
 )
-OPTIONS (description = 'Business glossary — certified metric definitions (the semantic contract).',
+OPTIONS (description = 'Business glossary - certified metric definitions (the semantic contract).',
          labels = [("layer", "metadata")]);
 
 -- ----------------------------------------------------------------------------
--- governance.dq_rules — rule catalog (the DQ engine's configuration)
+-- governance.dq_rules - rule catalog (the DQ engine's configuration)
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `zumiq-prod.governance.dq_rules`
 (
@@ -116,11 +116,11 @@ CREATE TABLE IF NOT EXISTS `zumiq-prod.governance.dq_rules`
   owner             STRING NOT NULL,
   created_at        TIMESTAMP NOT NULL
 )
-OPTIONS (description = 'Data quality rule catalog — the engine configuration.',
+OPTIONS (description = 'Data quality rule catalog - the engine configuration.',
          labels = [("layer", "governance")]);
 
 -- ----------------------------------------------------------------------------
--- governance.dq_run_results — every check execution
+-- governance.dq_run_results - every check execution
 -- Partitioned by run_date, clustered by table_id.
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `zumiq-prod.governance.dq_run_results`
@@ -145,11 +145,11 @@ CREATE TABLE IF NOT EXISTS `zumiq-prod.governance.dq_run_results`
 )
 PARTITION BY run_date
 CLUSTER BY table_id, dimension
-OPTIONS (description = 'DQ engine run results — every check execution, audit-ready.',
+OPTIONS (description = 'DQ engine run results - every check execution, audit-ready.',
          labels = [("layer", "governance")]);
 
 -- ----------------------------------------------------------------------------
--- governance.dq_health_daily — daily enterprise / per-product health score
+-- governance.dq_health_daily - daily enterprise / per-product health score
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `zumiq-prod.governance.dq_health_daily`
 (
@@ -171,7 +171,7 @@ OPTIONS (description = 'Daily data quality health scores per data product.',
          labels = [("layer", "governance")]);
 
 -- ----------------------------------------------------------------------------
--- ops.alert_history — all platform alerts
+-- ops.alert_history - all platform alerts
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `zumiq-prod.ops.alert_history`
 (
@@ -191,11 +191,11 @@ CREATE TABLE IF NOT EXISTS `zumiq-prod.ops.alert_history`
 )
 PARTITION BY triggered_date
 CLUSTER BY alert_type, status
-OPTIONS (description = 'Platform alert history — DQ, pipeline, cost, freshness alerts.',
+OPTIONS (description = 'Platform alert history - DQ, pipeline, cost, freshness alerts.',
          labels = [("layer", "ops")]);
 
 -- ----------------------------------------------------------------------------
--- raw_layer.inventory_receipts — streaming IoT/warehouse receipts (used for
+-- raw_layer.inventory_receipts - streaming IoT/warehouse receipts (used for
 -- streaming + window function examples; partitioned hourly)
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `zumiq-prod.raw_layer.inventory_receipts`
@@ -214,7 +214,7 @@ CREATE TABLE IF NOT EXISTS `zumiq-prod.raw_layer.inventory_receipts`
 )
 PARTITION BY received_date
 CLUSTER BY warehouse_code, product_key
-OPTIONS (description = 'Streaming warehouse receipt events — supports hourly partition + JSON/window examples.',
+OPTIONS (description = 'Streaming warehouse receipt events - supports hourly partition + JSON/window examples.',
          labels = [("layer", "raw")]);
 
 -- ============================================================================

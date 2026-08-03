@@ -1,4 +1,4 @@
-# ZUMIQ — Risk Register & Success Metrics
+# ZUMIQ - Risk Register & Success Metrics
 
 ## 1. Risk Register
 
@@ -18,7 +18,7 @@
 ## 2. Success Metrics Framework
 
 ### North Star
-**Weekly Trusted Decisions (WTD)** — certified-product dashboard views + API
+**Weekly Trusted Decisions (WTD)** - certified-product dashboard views + API
 calls per week. Target: 2× in 12 months.
 
 ### Guardrail Metrics (can't sacrifice)

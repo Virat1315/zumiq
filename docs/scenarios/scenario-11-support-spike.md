@@ -1,4 +1,4 @@
-# Scenario 11 — Support Case Spike from a Billing Bug
+# Scenario 11 - Support Case Spike from a Billing Bug
 
 **Severity:** P2 · **Domain:** CX / Product
 
@@ -8,7 +8,7 @@ didn't know if it was a product bug, a billing error, or a service issue.
 Executives asked if this was a "customer experience crisis."
 
 ## SQL Investigation
-Step 1 — confirm the spike and isolate by case type:
+Step 1 - confirm the spike and isolate by case type:
 
 ```sql
 SELECT opened_date, case_type, COUNT(*) AS cases
@@ -18,7 +18,7 @@ GROUP BY 1, 2 ORDER BY 1, 3 DESC;
 -- 07-11 → 07-12: BILLING cases 1,100 → 4,020
 ```
 
-Step 2 — correlate with operational events (what happened on 07-11?):
+Step 2 - correlate with operational events (what happened on 07-11?):
 
 ```sql
 SELECT event_date, event_type, source_system, COUNT(*) AS n
@@ -30,7 +30,7 @@ ORDER BY 1, 4 DESC;
 -- 07-11: PAYMENT_FAILED exploded on GATEWAY svc-pay-3 (11k → 89k)
 ```
 
-Step 3 — link them: are billing cases following payment failures?
+Step 3 - link them: are billing cases following payment failures?
 
 ```sql
 SELECT s.opened_date,
@@ -49,7 +49,7 @@ opened billing cases. The product team didn't see the payment-failure
 dashboard trend because CX and platform dashboards were disconnected.
 
 ## Dashboard
-"Cross-Domain Spike Correlation" — overlays ops events (payment failures,
+"Cross-Domain Spike Correlation" - overlays ops events (payment failures,
 latency) with support cases and GMV on one timeline, so a CX spike is linked
 to its technical cause in one screen.
 

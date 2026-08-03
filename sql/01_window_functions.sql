@@ -1,11 +1,11 @@
 -- ============================================================================
--- ZUMIQ — SQL LIBRARY · 01_window_functions.sql
+-- ZUMIQ - SQL LIBRARY · 01_window_functions.sql
 -- Production SQL for a global enterprise platform. Every query has an
 -- explanation comment. Run against zumiq-prod datasets (synthetic data).
 -- ============================================================================
 
 -- ----------------------------------------------------------------------------
--- Q001 · ROW_NUMBER — Deduplicate transactions loaded twice by the OMS
+-- Q001 · ROW_NUMBER - Deduplicate transactions loaded twice by the OMS
 -- Problem: the payments batch loaded 201,043 transactions twice.
 -- Answer: the latest etl_loaded_at row wins; keep one row per (txn_id).
 -- ----------------------------------------------------------------------------
@@ -23,7 +23,7 @@ FROM (
 WHERE rn = 1;
 
 -- ----------------------------------------------------------------------------
--- Q002 · ROW_NUMBER — Identify the true "first transaction" per customer
+-- Q002 · ROW_NUMBER - Identify the true "first transaction" per customer
 -- Used by the Growth team to measure first-buy latency.
 -- ----------------------------------------------------------------------------
 WITH first_txn AS (
@@ -40,7 +40,7 @@ FROM first_txn
 WHERE rn = 1;
 
 -- ----------------------------------------------------------------------------
--- Q003 · RANK vs DENSE_RANK — Daily GMV rank per region (shared ranks matter)
+-- Q003 · RANK vs DENSE_RANK - Daily GMV rank per region (shared ranks matter)
 -- RANK: ties share a rank and skip (1,2,2,4). DENSE_RANK: ties share, no skip.
 -- ----------------------------------------------------------------------------
 SELECT
@@ -57,7 +57,7 @@ FROM (
 );
 
 -- ----------------------------------------------------------------------------
--- Q004 · LAG — Day-over-day GMV change (the executive "momentum" column)
+-- Q004 · LAG - Day-over-day GMV change (the executive "momentum" column)
 -- ----------------------------------------------------------------------------
 WITH daily AS (
   SELECT
@@ -78,7 +78,7 @@ FROM daily
 ORDER BY txn_date;
 
 -- ----------------------------------------------------------------------------
--- Q005 · LAG with 7-day offset — Week-over-week comparison (smooths weekday effect)
+-- Q005 · LAG with 7-day offset - Week-over-week comparison (smooths weekday effect)
 -- ----------------------------------------------------------------------------
 WITH daily AS (
   SELECT txn_date, ROUND(SUM(amount_usd),2) AS gmv_usd
@@ -96,7 +96,7 @@ FROM daily
 ORDER BY txn_date;
 
 -- ----------------------------------------------------------------------------
--- Q006 · LEAD — Forecast pipeline: next refresh time vs SLA (freshness watch)
+-- Q006 · LEAD - Forecast pipeline: next refresh time vs SLA (freshness watch)
 -- ----------------------------------------------------------------------------
 SELECT
   pipeline_name,
@@ -112,7 +112,7 @@ ORDER BY run_finished_at DESC
 LIMIT 20;
 
 -- ----------------------------------------------------------------------------
--- Q007 · NTILE — Decile customers by lifetime value (segmentation for CX)
+-- Q007 · NTILE - Decile customers by lifetime value (segmentation for CX)
 -- ----------------------------------------------------------------------------
 SELECT
   customer_key,
@@ -126,7 +126,7 @@ FROM (
 );
 
 -- ----------------------------------------------------------------------------
--- Q008 · FIRST_VALUE / LAST_VALUE — Session analysis:
+-- Q008 · FIRST_VALUE / LAST_VALUE - Session analysis:
 -- First page vs last event in a user session (product behavior team)
 -- ----------------------------------------------------------------------------
 SELECT
@@ -142,7 +142,7 @@ WHERE event_type IN ('LOGIN','ORDER_PLACED','PAYMENT_FAILED','API_CALL')
 LIMIT 100;
 
 -- ----------------------------------------------------------------------------
--- Q009 · Running total (cumulative) — YTD GMV with ROWS UNBOUNDED PRECEDING
+-- Q009 · Running total (cumulative) - YTD GMV with ROWS UNBOUNDED PRECEDING
 -- ----------------------------------------------------------------------------
 WITH daily AS (
   SELECT txn_date, ROUND(SUM(amount_usd),2) AS gmv_usd
@@ -159,7 +159,7 @@ FROM daily
 ORDER BY txn_date;
 
 -- ----------------------------------------------------------------------------
--- Q010 · Moving average (7-day) — smooths daily volatility for trend reporting
+-- Q010 · Moving average (7-day) - smooths daily volatility for trend reporting
 -- ----------------------------------------------------------------------------
 WITH daily AS (
   SELECT txn_date, ROUND(SUM(amount_usd),2) AS gmv_usd
@@ -176,7 +176,7 @@ FROM daily
 ORDER BY txn_date;
 
 -- ----------------------------------------------------------------------------
--- Q011 · SUM with PARTITION — % of BU total (contribution analysis)
+-- Q011 · SUM with PARTITION - % of BU total (contribution analysis)
 -- ----------------------------------------------------------------------------
 SELECT
   txn_date,
@@ -193,7 +193,7 @@ FROM (
 ORDER BY txn_date, gmv_usd DESC;
 
 -- ----------------------------------------------------------------------------
--- Q012 · Nested window — moving rank of BU share over time (competitive view)
+-- Q012 · Nested window - moving rank of BU share over time (competitive view)
 -- ----------------------------------------------------------------------------
 WITH bu_daily AS (
   SELECT txn_date, bu_key, ROUND(SUM(amount_usd),2) AS gmv_usd
@@ -212,7 +212,7 @@ FROM bu_daily
 ORDER BY txn_date, bu_rank_today;
 
 -- ----------------------------------------------------------------------------
--- Q013 · QUALIFY — Keep only top-3 products by GMV per BU/day (feeds dashboard)
+-- Q013 · QUALIFY - Keep only top-3 products by GMV per BU/day (feeds dashboard)
 -- ----------------------------------------------------------------------------
 SELECT
   txn_date,
@@ -225,7 +225,7 @@ GROUP BY 1, 2, 3
 QUALIFY ROW_NUMBER() OVER (PARTITION BY txn_date, bu_key ORDER BY SUM(amount_usd) DESC) <= 3;
 
 -- ----------------------------------------------------------------------------
--- Q014 · NTH_VALUE — 2nd highest order value per day (risk: outlier check)
+-- Q014 · NTH_VALUE - 2nd highest order value per day (risk: outlier check)
 -- ----------------------------------------------------------------------------
 WITH daily_orders AS (
   SELECT txn_date, txn_id, amount_usd
@@ -242,7 +242,7 @@ FROM daily_orders
 ORDER BY txn_date;
 
 -- ----------------------------------------------------------------------------
--- Q015 · Percentile via PERCENT_RANK / CUME_DIST — "is this order an outlier?"
+-- Q015 · Percentile via PERCENT_RANK / CUME_DIST - "is this order an outlier?"
 -- ----------------------------------------------------------------------------
 SELECT
   txn_id,
@@ -255,7 +255,7 @@ ORDER BY amount_usd DESC
 LIMIT 20;
 
 -- ----------------------------------------------------------------------------
--- Q016 · Session windowing with SUM IF — customer journey funnel per day
+-- Q016 · Session windowing with SUM IF - customer journey funnel per day
 -- ----------------------------------------------------------------------------
 SELECT
   event_date,
@@ -270,7 +270,7 @@ GROUP BY 1
 ORDER BY 1;
 
 -- ----------------------------------------------------------------------------
--- Q017 · LAG + LEAD combo — SLA breach detection on support cases
+-- Q017 · LAG + LEAD combo - SLA breach detection on support cases
 -- Reopened cases: closed then reopened within 7 days (signal of poor FCR).
 -- ----------------------------------------------------------------------------
 SELECT
@@ -285,7 +285,7 @@ FROM `zumiq-prod.core_layer.fct_support_cases`
 QUALIFY days_to_next_case BETWEEN 1 AND 7;
 
 -- ----------------------------------------------------------------------------
--- Q018 · Difference from median (IQR-style) — anomaly flagging for GMV
+-- Q018 · Difference from median (IQR-style) - anomaly flagging for GMV
 -- ----------------------------------------------------------------------------
 WITH stats AS (
   SELECT

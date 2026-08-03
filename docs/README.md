@@ -1,4 +1,4 @@
-# ZUMIQ — Documentation Index
+# ZUMIQ - Documentation Index
 
 Everything in this repo, one page. Start with the README, then go deep where
 your role takes you.
@@ -30,7 +30,7 @@ your role takes you.
 - [Business Glossary (Certified Metrics)](governance/business-glossary.md)
 
 ## Business Scenarios (22 playbooks)
-- [Index](scenarios/README.md) — all 22 incidents with SQL, RCA, impact, fix
+- [Index](scenarios/README.md) - all 22 incidents with SQL, RCA, impact, fix
 
 ## Tableau
 - [Dashboard Specifications](tableau/dashboards.md)
@@ -53,8 +53,8 @@ your role takes you.
 - [5-Minute Recruiter Demo](careers/recruiter-demo.md)
 
 ## Code
-- `sql/` — 105 production SQL queries (9 files, Q001–Q105)
-- `bigquery/` — DDL, DML (SCD2), views, materialized views, stored procedures,
+- `sql/` - 105 production SQL queries (9 files, Q001–Q105)
+- `bigquery/` - DDL, DML (SCD2), views, materialized views, stored procedures,
   scheduled queries, DQ rules, performance
-- `python/` — dq_engine, metadata_agent, lineage parser
-- `scripts/` — setup + synthetic data seeding
+- `python/` - dq_engine, metadata_agent, lineage parser
+- `scripts/` - setup + synthetic data seeding

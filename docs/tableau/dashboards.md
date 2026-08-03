@@ -1,4 +1,4 @@
-# ZUMIQ — Executive Dashboards (Tableau)
+# ZUMIQ - Executive Dashboards (Tableau)
 
 > Ten certified dashboards. Every chart in this document is specified with
 > **Purpose · Business Question · KPI · Calculation · Target User · Decision
@@ -6,7 +6,7 @@
 > certified semantic views (never raw SQL formulas).
 
 ## 1. Executive Overview
-- **Purpose:** The CEO/CFO morning brief — one screen, one version of the truth.
+- **Purpose:** The CEO/CFO morning brief - one screen, one version of the truth.
 - **Business question:** "Are we on track, and is the number right?"
 - **KPIs:** GMV, Net Revenue, Gross Margin, Active Customers, DQ Score,
   Freshness, Cost/TB (guardrails on the side rail).
@@ -54,7 +54,7 @@
 - **Decision enabled:** Guidance adjustments, cost actions, restatement review.
 
 ## 6. Platform Health
-- **Purpose:** Pipeline, freshness, DQ, and alert status — one pane.
+- **Purpose:** Pipeline, freshness, DQ, and alert status - one pane.
 - **Business question:** "Is the platform keeping its promises?"
 - **KPIs:** Pipeline success rate, DQ score, freshness compliance, open alerts,
   MTTR.

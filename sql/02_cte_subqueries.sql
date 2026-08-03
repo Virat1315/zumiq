@@ -1,10 +1,10 @@
 -- ============================================================================
--- ZUMIQ — SQL LIBRARY · 02_cte_subqueries.sql
+-- ZUMIQ - SQL LIBRARY · 02_cte_subqueries.sql
 -- CTEs, recursive CTEs, subqueries, semi/anti joins, dedupe patterns.
 -- ============================================================================
 
 -- ----------------------------------------------------------------------------
--- Q019 · CTE chain — Customer RFM-style analysis (the CX standard query)
+-- Q019 · CTE chain - Customer RFM-style analysis (the CX standard query)
 -- ----------------------------------------------------------------------------
 WITH txns AS (
   SELECT customer_key, txn_date, amount_usd
@@ -40,7 +40,7 @@ GROUP BY 1
 ORDER BY 1;
 
 -- ----------------------------------------------------------------------------
--- Q020 · Multiple CTEs — Pipeline SLA dashboard (freshness per critical table)
+-- Q020 · Multiple CTEs - Pipeline SLA dashboard (freshness per critical table)
 -- ----------------------------------------------------------------------------
 WITH last_load AS (
   SELECT target_table, MAX(run_finished_at) AS last_ok
@@ -67,7 +67,7 @@ LEFT JOIN last_load AS l
 ORDER BY c.criticality, sla_status DESC;
 
 -- ----------------------------------------------------------------------------
--- Q021 · Scalar subquery — Compare BU performance vs enterprise average
+-- Q021 · Scalar subquery - Compare BU performance vs enterprise average
 -- ----------------------------------------------------------------------------
 SELECT
   txn_date,
@@ -85,7 +85,7 @@ WHERE status='POSTED' AND is_reversal = FALSE
 GROUP BY 1, 2;
 
 -- ----------------------------------------------------------------------------
--- Q022 · Correlated subquery — Customers with no transaction in 90 days
+-- Q022 · Correlated subquery - Customers with no transaction in 90 days
 -- (anti-pattern avoided: rewritten as NOT EXISTS; EXISTS is the flag here)
 -- ----------------------------------------------------------------------------
 SELECT c.customer_id, c.full_name, c.tier
@@ -100,7 +100,7 @@ WHERE c.is_current = TRUE
   );
 
 -- ----------------------------------------------------------------------------
--- Q023 · NOT EXISTS (anti-join) — Products sold in no transaction this month
+-- Q023 · NOT EXISTS (anti-join) - Products sold in no transaction this month
 -- (inventory/demand planning: dead stock candidates)
 -- ----------------------------------------------------------------------------
 SELECT p.product_id, p.product_name, p.product_category
@@ -114,7 +114,7 @@ WHERE p.is_current = TRUE
   );
 
 -- ----------------------------------------------------------------------------
--- Q024 · Recursive CTE — Employee org hierarchy (depth + root ancestor)
+-- Q024 · Recursive CTE - Employee org hierarchy (depth + root ancestor)
 -- The management chain for any employee, walking up dim_employee.
 -- ----------------------------------------------------------------------------
 WITH RECURSIVE org AS (
@@ -144,7 +144,7 @@ FROM org
 ORDER BY depth;
 
 -- ----------------------------------------------------------------------------
--- Q025 · Recursive CTE — Number of employees reporting under each manager
+-- Q025 · Recursive CTE - Number of employees reporting under each manager
 -- (management span-of-control, HR planning)
 -- ----------------------------------------------------------------------------
 WITH RECURSIVE org AS (
@@ -166,7 +166,7 @@ ORDER BY 2 DESC
 LIMIT 25;
 
 -- ----------------------------------------------------------------------------
--- Q026 · Recursive CTE — Bill of materials explosion (manufacturing BU)
+-- Q026 · Recursive CTE - Bill of materials explosion (manufacturing BU)
 -- Total component quantity needed for a finished good.
 -- ----------------------------------------------------------------------------
 WITH RECURSIVE bom AS (
@@ -195,7 +195,7 @@ GROUP BY 1
 ORDER BY 2 DESC;
 
 -- ----------------------------------------------------------------------------
--- Q027 · Nested subquery with CASE — GMV by tier with cohort bucketing
+-- Q027 · Nested subquery with CASE - GMV by tier with cohort bucketing
 -- ----------------------------------------------------------------------------
 SELECT
   CASE
@@ -216,7 +216,7 @@ GROUP BY 1
 ORDER BY 1;
 
 -- ----------------------------------------------------------------------------
--- Q028 · Derived table (inline view) — Active customers per BU with margin
+-- Q028 · Derived table (inline view) - Active customers per BU with margin
 -- ----------------------------------------------------------------------------
 SELECT
   bu.bu_name,
@@ -237,7 +237,7 @@ JOIN `zumiq-prod.core_layer.dim_business_unit` AS bu
 ORDER BY act.gmv DESC;
 
 -- ----------------------------------------------------------------------------
--- Q029 · EXISTS + NOT EXISTS combo — Customers whose latest 3 cases all escalated
+-- Q029 · EXISTS + NOT EXISTS combo - Customers whose latest 3 cases all escalated
 -- ----------------------------------------------------------------------------
 SELECT DISTINCT c.customer_id, c.full_name
 FROM `zumiq-prod.core_layer.dim_customer` AS c
@@ -256,7 +256,7 @@ WHERE NOT EXISTS (
   AND c.is_active = TRUE;
 
 -- ----------------------------------------------------------------------------
--- Q030 · Set operations (UNION ALL) — Merging cross-system transaction views
+-- Q030 · Set operations (UNION ALL) - Merging cross-system transaction views
 -- (ERP + OMS transactions into a unified ledger for finance)
 -- ----------------------------------------------------------------------------
 SELECT txn_id, txn_date, amount_usd, 'ERP' AS source_system

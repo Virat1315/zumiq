@@ -1,4 +1,4 @@
-# ZUMIQ — Product Requirements Document (PRD)
+# ZUMIQ - Product Requirements Document (PRD)
 
 > Version 2.1 · Status: APPROVED · Owner: Data Product Manager
 > Reviewers: Analytics Engineering, Data Engineering, Finance, CX Ops, FinOps.
@@ -35,7 +35,7 @@ CX ops, FinOps) needs data that is *trusted, findable, fresh, and cheap to use*.
 - Multi-cloud data federation (GCP only this cycle).
 
 ## 3. Users & Personas
-(see personas-stakeholders-journeys.md) — 5 primary personas.
+(see personas-stakeholders-journeys.md) - 5 primary personas.
 
 ## 4. Functional Requirements
 
@@ -86,32 +86,32 @@ CX ops, FinOps) needs data that is *trusted, findable, fresh, and cheap to use*.
 
 ## 6. User Stories & Acceptance Criteria (subset)
 
-**US-01 — Analyst can find the right table**
+**US-01 - Analyst can find the right table**
 > As a data analyst, I want to search the catalog by business term so that I
 > use the certified table, not a stale copy.
 - AC: catalog returns certified table for a glossary term; shows owner, SLA,
   DQ score; links lineage.
 
-**US-02 — Executive sees one number**
+**US-02 - Executive sees one number**
 > As an executive, I want one GMV number across all dashboards.
 - AC: all dashboards read the certified view; glossary term is CERTIFIED;
   any difference raises a platform alert.
 
-**US-03 — DQ failure is visible**
+**US-03 - DQ failure is visible**
 > As a platform engineer, I want a DQ failure to block promotion and page me.
 - AC: ERROR-severity failure → status FAIL → promotion blocked → HIGH alert
   with table + sample rows.
 
-**US-04 — Cost anomaly is caught**
+**US-04 - Cost anomaly is caught**
 > As FinOps, I want to be alerted when any user's daily cost spikes.
 - AC: daily cost > $1k → alert; top-spender report ready by 9:00 ET.
 
-**US-05 — Restatement is safe**
+**US-05 - Restatement is safe**
 > As Finance, I want to recompute last quarter with correct product margins.
 - AC: `sp_recompute_executive_kpis` recomputes window; version bumps; lineage
   shows affected dashboards.
 
-**US-06 — Freshness SLA is enforced**
+**US-06 - Freshness SLA is enforced**
 > As a BU head, I want my morning data to always be there.
 - AC: T1 tables load by 07:30 ET or a HIGH alert fires with escalation.
 

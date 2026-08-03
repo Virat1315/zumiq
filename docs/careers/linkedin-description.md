@@ -1,13 +1,13 @@
-# ZUMIQ — LinkedIn Project Description
+# ZUMIQ - LinkedIn Project Description
 
 > Copy-paste for the Projects / Experience section. Two lengths provided.
 
 ## Medium (recommended)
 
-**ZUMIQ — Enterprise Data Intelligence Platform (Portfolio)**
+**ZUMIQ - Enterprise Data Intelligence Platform (Portfolio)**
 
 Designed and built a cloud-native enterprise data platform that transforms raw
-operational data into certified, governed, analytics-ready data products —
+operational data into certified, governed, analytics-ready data products -
 the way an internal platform team at a Fortune 100 company would build it.
 
 **The problem:** In a large enterprise, teams suffer from duplicated data,
@@ -42,7 +42,7 @@ reporting, stakeholder management.
 
 ## Short
 
-**ZUMIQ — Enterprise Data Intelligence Platform.** Built a cloud-native
+**ZUMIQ - Enterprise Data Intelligence Platform.** Built a cloud-native
 BigQuery platform turning raw operational data into certified, governed data
 products. Outcomes: enterprise DQ score 82→98, 43% query-cost reduction, one
 version of the truth across all executive dashboards. Includes a medallion

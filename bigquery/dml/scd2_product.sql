@@ -1,7 +1,7 @@
 -- ============================================================================
--- ZUMIQ — Enterprise Data Intelligence Platform
+-- ZUMIQ - Enterprise Data Intelligence Platform
 -- scd2_product.sql
--- SCD Type 2 load for dim_product — demonstrates the "revision" pattern using
+-- SCD Type 2 load for dim_product - demonstrates the "revision" pattern using
 -- row_number() over partition by product_id to version products, plus an
 -- example of a slowly-changing *hierarchy* (category reassignment).
 --
@@ -62,7 +62,7 @@ WHERE cur.product_key IS NULL   -- no current version (either new or just expire
   AND s.is_active = TRUE;
 
 -- ============================================================================
--- HISTORY RECONSTRUCTED EXAMPLE — "as-of" product price (temporal query)
+-- HISTORY RECONSTRUCTED EXAMPLE - "as-of" product price (temporal query)
 -- Used by finance for margin restatements:
 --   SELECT price history for a product as of a historical date.
 -- ============================================================================

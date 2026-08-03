@@ -1,4 +1,4 @@
-# ZUMIQ — System Architecture
+# ZUMIQ - System Architecture
 
 > Full end-to-end architecture, from external systems to executive dashboards.
 > This is the "principal engineer" view: every hop justified by business need,
@@ -28,24 +28,24 @@
  └─────────────┘         └──────────────────────────────┘
 ```
 
-## 2. Data Flow — Layer by Layer
+## 2. Data Flow - Layer by Layer
 
 | # | Layer | Dataset | Storage | Volume/Day | Transform | Consumers |
 |---|---|---|---|---|---|---|
-| 0 | Landing | `landing_zone` | Cloud Storage (raw files) | ~50 GB | none (schema-on-read) | — |
+| 0 | Landing | `landing_zone` | Cloud Storage (raw files) | ~50 GB | none (schema-on-read) | - |
 | 1 | Raw | `raw_layer` | BigQuery immutable, partition by ingest date | ~48 GB | append only, no update | platform only |
 | 2 | Validation | `staging_layer` | BigQuery, DQ checkpointed | ~42 GB | schema validate, dedup, std | platform only |
 | 3 | Transformation | `core_layer` | BigQuery SCD2 dims + facts | ~18 GB | conforming, SCD2, business logic | analytics teams |
 | 4 | Business | `gold_layer` | BigQuery star marts + aggregates | ~4 GB | certified aggregates | BI consumers |
 | 5 | Analytics+Semantic | `analytics_layer` | BigQuery views + MV + KPI tables | compute | glossarized metric definitions | dashboards, self-serve |
-| — | Governance | `governance`, `metadata` | BigQuery | small | DQ engine, metadata agent, lineage | platform, auditors |
-| — | Ops & Cost | `ops`, `cost` | BigQuery | small | pipeline observability, FinOps | SRE, FinOps, product |
+| - | Governance | `governance`, `metadata` | BigQuery | small | DQ engine, metadata agent, lineage | platform, auditors |
+| - | Ops & Cost | `ops`, `cost` | BigQuery | small | pipeline observability, FinOps | SRE, FinOps, product |
 
 **Design rationale (multi-hop):**
 - The **raw → staging** hop makes validation explicit and re-runnable.
 - The **staging → core** hop is where *meaning* is created (conforming, SCD2).
 - The **core → gold/analytics** hop is where *certification* happens.
-- Rebuilding any downstream hop never touches upstream data — the platform can
+- Rebuilding any downstream hop never touches upstream data - the platform can
   reprocess a layer without affecting consumers until it's ready.
 
 ## 3. Ingestion Patterns
@@ -63,7 +63,7 @@
 
 - **Orchestration**: Cloud Composer (Airflow) DAGs; BigQuery scheduled queries
   for simple refreshes; Dataform for SQL CI/CD (dev → staging → prod).
-- **State**: `ops.fct_pipeline_runs` is written by every job — one observability
+- **State**: `ops.fct_pipeline_runs` is written by every job - one observability
   table for all pipelines (the "single pane of glass").
 - **Idempotency**: every job uses partition-scoped DELETE+INSERT or MERGE.
 - **Failures**: status FAILED → alert; DQ failure blocks promotion to certified.
@@ -81,7 +81,7 @@
   DLP for PII, row-level security on gold marts.
 - **Cost**: slot reservations, per-team budgets + labels, `cost.fct_query_cost`
   telemetry, anomaly alerts, dry-run cost estimates in CI.
-- **Quality**: DQ engine (see DQ framework) — 9 dimensions, auto-alerting.
+- **Quality**: DQ engine (see DQ framework) - 9 dimensions, auto-alerting.
 - **Audit**: `ops.alert_history` + DQ run results + pipeline runs = full
   audit trail for regulators (SOX for Finance data products).
 

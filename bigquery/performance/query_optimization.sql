@@ -1,5 +1,5 @@
 -- ============================================================================
--- ZUMIQ — Enterprise Data Intelligence Platform
+-- ZUMIQ - Enterprise Data Intelligence Platform
 -- performance/query_optimization.sql
 -- Performance & cost governance SQL that the platform runs on itself:
 --   · INFORMATION_SCHEMA telemetry (slots, jobs, partitioning)

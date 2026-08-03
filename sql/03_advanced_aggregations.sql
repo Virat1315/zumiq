@@ -1,10 +1,10 @@
 -- ============================================================================
--- ZUMIQ — SQL LIBRARY · 03_advanced_aggregations.sql
+-- ZUMIQ - SQL LIBRARY · 03_advanced_aggregations.sql
 -- ROLLUP, CUBE, GROUPING SETS, PIVOT, UNPIVOT, conditional aggregation.
 -- ============================================================================
 
 -- ----------------------------------------------------------------------------
--- Q031 · GROUP BY ROLLUP — GMV at (day × BU) → (day) → (grand total)
+-- Q031 · GROUP BY ROLLUP - GMV at (day × BU) → (day) → (grand total)
 -- One pass produces subtotals for executive "drill-up" reporting.
 -- ----------------------------------------------------------------------------
 SELECT
@@ -20,7 +20,7 @@ GROUP BY ROLLUP (txn_date, bu_key)
 ORDER BY txn_date, bu_key;
 
 -- ----------------------------------------------------------------------------
--- Q032 · GROUP BY CUBE — GMV across every combination of (region, channel, type)
+-- Q032 · GROUP BY CUBE - GMV across every combination of (region, channel, type)
 -- Complete slice-and-dice table for the planning team.
 -- ----------------------------------------------------------------------------
 SELECT
@@ -38,7 +38,7 @@ GROUP BY CUBE (region_key, channel_key, txn_type)
 ORDER BY 1, 2, 3;
 
 -- ----------------------------------------------------------------------------
--- Q033 · GROUPING SETS — Explicit subtotal control (BU total + day total)
+-- Q033 · GROUPING SETS - Explicit subtotal control (BU total + day total)
 -- More efficient than ROLLUP when you don't need the full hierarchy.
 -- ----------------------------------------------------------------------------
 SELECT
@@ -52,7 +52,7 @@ GROUP BY GROUPING SETS ((bu_key, txn_date), (bu_key), (txn_date), ())
 ORDER BY 1, 2;
 
 -- ----------------------------------------------------------------------------
--- Q034 · Conditional aggregation with FILTER-like COUNTIF — Service SLAs
+-- Q034 · Conditional aggregation with FILTER-like COUNTIF - Service SLAs
 -- % of cases resolved within SLA by priority.
 -- ----------------------------------------------------------------------------
 SELECT
@@ -69,7 +69,7 @@ GROUP BY 1
 ORDER BY 1;
 
 -- ----------------------------------------------------------------------------
--- Q035 · PIVOT — Regions as columns (weekly GMV matrix for exec review)
+-- Q035 · PIVOT - Regions as columns (weekly GMV matrix for exec review)
 -- PIVOT in BigQuery is implemented with explicit conditional aggregation.
 -- ----------------------------------------------------------------------------
 SELECT
@@ -93,7 +93,7 @@ GROUP BY 1
 ORDER BY 1;
 
 -- ----------------------------------------------------------------------------
--- Q036 · UNPIVOT — Normalize wide cost columns into long-form for Tableau
+-- Q036 · UNPIVOT - Normalize wide cost columns into long-form for Tableau
 -- ----------------------------------------------------------------------------
 WITH cost_matrix AS (
   SELECT
@@ -112,7 +112,7 @@ UNPIVOT (cost_usd FOR layer_name IN (raw_cost, staging_cost, core_cost, analytic
 ORDER BY 1, 2;
 
 -- ----------------------------------------------------------------------------
--- Q037 · FILTER inside HAVING — BUs with both high GMV and rising failures
+-- Q037 · FILTER inside HAVING - BUs with both high GMV and rising failures
 -- ----------------------------------------------------------------------------
 SELECT
   bu_key,
@@ -139,7 +139,7 @@ GROUP BY 1
 ORDER BY 5;
 
 -- ----------------------------------------------------------------------------
--- Q039 · Weighted average with SUM — Blended margin per category
+-- Q039 · Weighted average with SUM - Blended margin per category
 -- ----------------------------------------------------------------------------
 SELECT
   p.product_category,
@@ -157,7 +157,7 @@ GROUP BY 1
 ORDER BY 2 DESC;
 
 -- ----------------------------------------------------------------------------
--- Q040 · Bucketed aggregation with CASE — age of open support cases
+-- Q040 · Bucketed aggregation with CASE - age of open support cases
 -- ----------------------------------------------------------------------------
 SELECT
   CASE
@@ -174,7 +174,7 @@ GROUP BY 1
 ORDER BY 1;
 
 -- ----------------------------------------------------------------------------
--- Q041 · HAVING with aggregation across two tables — high-churn regions
+-- Q041 · HAVING with aggregation across two tables - high-churn regions
 -- ----------------------------------------------------------------------------
 SELECT
   r.region_name,
@@ -194,7 +194,7 @@ HAVING COUNT(DISTINCT c.customer_key) > 1000
 ORDER BY 5 DESC;
 
 -- ----------------------------------------------------------------------------
--- Q042 · ARRAY_AGG for lists — one row per BU with its top SKUs (JSON-friendly)
+-- Q042 · ARRAY_AGG for lists - one row per BU with its top SKUs (JSON-friendly)
 -- ----------------------------------------------------------------------------
 SELECT
   bu_key,

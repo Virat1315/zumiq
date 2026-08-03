@@ -1,5 +1,5 @@
 -- ============================================================================
--- ZUMIQ — SQL LIBRARY · 09_data_quality_sql.sql
+-- ZUMIQ - SQL LIBRARY · 09_data_quality_sql.sql
 -- The SQL rule patterns used by the Data Quality Engine.
 -- Each pattern maps to a governance DQ dimension and is parameterized by the
 -- engine (see python/dq_engine). These are shown here so reviewers can see
@@ -7,7 +7,7 @@
 -- ============================================================================
 
 -- ----------------------------------------------------------------------------
--- Q096 · Completeness — NULL rate per critical column
+-- Q096 · Completeness - NULL rate per critical column
 -- ----------------------------------------------------------------------------
 SELECT
   ROUND(100 * SAFE_DIVIDE(COUNTIF(customer_key IS NULL), COUNT(*)), 4) AS null_pct,
@@ -16,7 +16,7 @@ FROM `zumiq-prod.core_layer.fct_transactions`
 WHERE txn_date = DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY);
 
 -- ----------------------------------------------------------------------------
--- Q097 · Uniqueness — duplicate txn_id detection (PK violation)
+-- Q097 · Uniqueness - duplicate txn_id detection (PK violation)
 -- ----------------------------------------------------------------------------
 SELECT
   txn_id,
@@ -27,7 +27,7 @@ GROUP BY 1
 HAVING COUNT(*) > 1;
 
 -- ----------------------------------------------------------------------------
--- Q098 · Validity — values outside allowed domain (txn_type, currency)
+-- Q098 · Validity - values outside allowed domain (txn_type, currency)
 -- ----------------------------------------------------------------------------
 SELECT
   COUNTIF(txn_type NOT IN ('DEPOSIT','WITHDRAWAL','PAYMENT','TRANSFER','FEE','REFUND','CHARGEBACK')) AS invalid_txn_types,
@@ -37,7 +37,7 @@ FROM `zumiq-prod.core_layer.fct_transactions`
 WHERE txn_date = DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY);
 
 -- ----------------------------------------------------------------------------
--- Q099 · Referential integrity — orphan facts (FK violation)
+-- Q099 · Referential integrity - orphan facts (FK violation)
 -- ----------------------------------------------------------------------------
 SELECT
   'dim_customer' AS fk_name,
@@ -49,7 +49,7 @@ WHERE c.customer_key IS NULL
   AND t.txn_date = DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY);
 
 -- ----------------------------------------------------------------------------
--- Q100 · Freshness — max age of the newest partition vs expected
+-- Q100 · Freshness - max age of the newest partition vs expected
 -- ----------------------------------------------------------------------------
 SELECT
   MAX(txn_date) AS newest_partition,
@@ -58,7 +58,7 @@ SELECT
 FROM `zumiq-prod.core_layer.fct_transactions`;
 
 -- ----------------------------------------------------------------------------
--- Q101 · Volume — day-over-day row count anomaly
+-- Q101 · Volume - day-over-day row count anomaly
 -- ----------------------------------------------------------------------------
 WITH vol AS (
   SELECT txn_date, COUNT(*) AS row_count
@@ -76,7 +76,7 @@ ORDER BY 1 DESC
 LIMIT 10;
 
 -- ----------------------------------------------------------------------------
--- Q102 · Outliers — transactions beyond 5 standard deviations
+-- Q102 · Outliers - transactions beyond 5 standard deviations
 -- ----------------------------------------------------------------------------
 WITH stats AS (
   SELECT
@@ -95,7 +95,7 @@ WHERE t.txn_date = DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY)
   AND t.amount_usd > s.avg_amt + 5 * s.std_amt;
 
 -- ----------------------------------------------------------------------------
--- Q103 · Consistency — cross-table reconciliation (fact vs aggregate table)
+-- Q103 · Consistency - cross-table reconciliation (fact vs aggregate table)
 -- ----------------------------------------------------------------------------
 SELECT
   (SELECT COALESCE(SUM(amount_usd), 0)
@@ -107,7 +107,7 @@ SELECT
    WHERE metric_date = DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY))     AS kpi_total;
 
 -- ----------------------------------------------------------------------------
--- Q104 · Null spike — column with >2× historical null rate
+-- Q104 · Null spike - column with >2× historical null rate
 -- ----------------------------------------------------------------------------
 WITH daily_nulls AS (
   SELECT
@@ -125,7 +125,7 @@ FROM daily_nulls
 ORDER BY 1 DESC;
 
 -- ----------------------------------------------------------------------------
--- Q105 · Late-arriving rows (timeliness) — posted after business cutoff
+-- Q105 · Late-arriving rows (timeliness) - posted after business cutoff
 -- ----------------------------------------------------------------------------
 SELECT
   COUNTIF(TIMESTAMP(etl_loaded_at) > TIMESTAMP_ADD(TIMESTAMP(txn_date), INTERVAL 12 HOUR))

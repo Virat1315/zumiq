@@ -1,4 +1,4 @@
-# ZUMIQ — Enterprise Business Scenarios (22 Playbooks)
+# ZUMIQ - Enterprise Business Scenarios (22 Playbooks)
 
 > Every scenario is a realistic enterprise incident with: **Problem, SQL
 > Investigation, Root Cause, Dashboard, Business Impact, Recommendation.**

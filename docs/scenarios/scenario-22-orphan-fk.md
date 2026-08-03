@@ -1,4 +1,4 @@
-# Scenario 22 — Orphan FK Surge After Master Data Cleanup
+# Scenario 22 - Orphan FK Surge After Master Data Cleanup
 
 **Severity:** P2 · **Domain:** DQ / Integrity
 
@@ -8,7 +8,7 @@ transactions fact table suddenly had thousands of rows pointing at customers
 that no longer exist. Downstream customer views silently dropped those rows.
 
 ## SQL Investigation
-Step 1 — count orphans (FK violations):
+Step 1 - count orphans (FK violations):
 
 ```sql
 SELECT
@@ -22,7 +22,7 @@ WHERE t.txn_date >= DATE '2026-07-01'
 -- 4,302 orphans ($610k) appearing right after the cleanup job ran
 ```
 
-Step 2 — when did orphans appear? (correlate with pipeline runs)
+Step 2 - when did orphans appear? (correlate with pipeline runs)
 
 ```sql
 SELECT t.txn_date,
@@ -32,10 +32,10 @@ LEFT JOIN `zumiq-prod.core_layer.dim_customer` AS c
   ON t.customer_key = c.customer_key
 WHERE t.txn_date >= DATE '2026-06-20'
 GROUP BY 1 ORDER BY 1;
--- Orphans start on Jul 08 — same day 'MASTER_DATA_MERGE' pipeline ran
+-- Orphans start on Jul 08 - same day 'MASTER_DATA_MERGE' pipeline ran
 ```
 
-Step 3 — confirm the merge changed surrogate keys:
+Step 3 - confirm the merge changed surrogate keys:
 
 ```sql
 SELECT run_id, pipeline_name, error_message, rows_written
@@ -47,12 +47,12 @@ WHERE pipeline_name = 'MASTER_DATA_MERGE' AND run_date = '2026-07-08';
 
 ## Root Cause
 The CRM merge changed natural customer IDs and re-surrogated keys, but the
-cleanup script updated `dim_customer` only — it forgot to remap
+cleanup script updated `dim_customer` only - it forgot to remap
 `fct_transactions.customer_key` (and `fct_support_cases`). This is the exact
 reason the DQ engine treats INTEGRITY as an ERROR dimension.
 
 ## Dashboard
-"Integrity / Orphans" — orphan counts by FK per table with the merge-job
+"Integrity / Orphans" - orphan counts by FK per table with the merge-job
 overlay; red when orphans > 0 on a T1 fact.
 
 ## Business Impact
@@ -67,5 +67,5 @@ overlay; red when orphans > 0 on a T1 fact.
 3. **Pipeline guard**: any job that deletes dim rows triggers an automatic
    FK integrity sweep + alert.
 4. **Audit**: the merge is now a certified procedure with `fct_pipeline_runs`
-   logging and a post-run integrity check — the "big red button" is now a
+   logging and a post-run integrity check - the "big red button" is now a
    controlled, tested process.

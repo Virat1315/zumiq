@@ -28,3 +28,8 @@ Thumbs.db
 .tmp/
 .vercel
 .env*
+
+# Next.js
+.next/
+next-env.d.ts
+node_modules/

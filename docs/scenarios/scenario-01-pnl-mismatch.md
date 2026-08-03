@@ -1,4 +1,4 @@
-# Scenario 01 — Executive P&L Mismatch: Finance vs Retail
+# Scenario 01 - Executive P&L Mismatch: Finance vs Retail
 
 **Severity:** P1 · **Domain:** Governance / Semantics
 
@@ -9,7 +9,7 @@ with "which number is right?" This was the classic symptom of the 7-definition
 problem: two teams computing the same KPI differently.
 
 ## SQL Investigation
-Step 1 — What are the two definitions actually doing? Diff the two queries:
+Step 1 - What are the two definitions actually doing? Diff the two queries:
 
 ```sql
 -- Finance version (brief): includes ALL posted transactions
@@ -31,7 +31,7 @@ WHERE status = 'POSTED' AND is_reversal = FALSE
                       WHERE channel_type = 'DIGITAL');   -- → 9,815,300.00
 ```
 
-Step 2 — prove they're the same data, different filters:
+Step 2 - prove they're the same data, different filters:
 
 ```sql
 -- The gap = refunds/chargebacks + non-digital channels
@@ -51,16 +51,16 @@ WHERE txn_date = '2026-07-13' AND status = 'POSTED'
 ## Root Cause
 Two dashboards each defined GMV in their own SQL. Finance counted refunds in
 GMV; Retail excluded refunds *and* physical channels. **There was no shared
-semantic layer** — the platform had not yet certified the GMV definition.
+semantic layer** - the platform had not yet certified the GMV definition.
 
 ## Dashboard
-The "KPI Definition Audit" — new dashboard listing every dashboard, its metric
+The "KPI Definition Audit" - new dashboard listing every dashboard, its metric
 definition, and whether it matches the CERTIFIED glossary term. Discrepancies
 flagged red.
 
 ## Business Impact
 - 40+ minutes of exec time weekly arguing about a number.
-- A "$2.6M gap" that did not exist — pure definition drift.
+- A "$2.6M gap" that did not exist - pure definition drift.
 - Confidence in ALL numbers undermined (the trust death spiral).
 
 ## Recommendation

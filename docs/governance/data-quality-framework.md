@@ -1,4 +1,4 @@
-# ZUMIQ — Data Quality Framework
+# ZUMIQ - Data Quality Framework
 
 > The automated DQ engine: 9 dimensions, enterprise scoring, root-cause
 > analysis, and automatic recommendations. Code lives in `bigquery/quality/`
@@ -8,7 +8,7 @@
 
 Data quality defects were costing the enterprise millions (duplicate payments,
 restated P&L, stale dashboards) and destroying stakeholder trust. ZUMIQ made
-quality **measurable, scored, and alertable** — visible to every data product
+quality **measurable, scored, and alertable** - visible to every data product
 consumer like a service-health uptime page.
 
 ## 2. The 9 DQ Dimensions
@@ -77,7 +77,7 @@ the DQ analyst walks the standard RCA:
 4. Is it **semantic** (definition changed)? → glossary change control, version bump.
 
 Each RCA ends with an **automatic recommendation** written to the alert:
-add a check, tighten a threshold, or fix the mapping — tracked to closure.
+add a check, tighten a threshold, or fix the mapping - tracked to closure.
 
 ## 7. Automatic Recommendations (examples)
 
@@ -94,7 +94,7 @@ add a check, tighten a threshold, or fix the mapping — tracked to closure.
 
 A certified data product **cannot be updated** unless the DQ suite passes
 (ERROR-level checks). This single rule eliminated "we knew it was wrong but
-published anyway" — the failure mode that destroyed trust originally.
+published anyway" - the failure mode that destroyed trust originally.
 
 ## 9. Key SQL & Code Artifacts
 

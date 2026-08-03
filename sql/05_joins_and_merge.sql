@@ -1,12 +1,12 @@
 -- ============================================================================
--- ZUMIQ — SQL LIBRARY · 05_joins_and_merge.sql
+-- ZUMIQ - SQL LIBRARY · 05_joins_and_merge.sql
 -- Join optimization, temporal/as-of joins, MERGE patterns, semi/anti joins,
 -- fan-out control. Enterprise join discipline: always join dims on their
 -- surrogate key + is_current guard, never fan out facts.
 -- ============================================================================
 
 -- ----------------------------------------------------------------------------
--- Q055 · Star-join discipline — fact × 4 dimensions with is_current guards
+-- Q055 · Star-join discipline - fact × 4 dimensions with is_current guards
 -- ----------------------------------------------------------------------------
 SELECT
   t.txn_id,
@@ -25,7 +25,7 @@ WHERE t.txn_date = DATE '2026-07-14'
 LIMIT 100;
 
 -- ----------------------------------------------------------------------------
--- Q056 · LEFT JOIN with NULL probe — DQ coverage gap (columns never checked)
+-- Q056 · LEFT JOIN with NULL probe - DQ coverage gap (columns never checked)
 -- ----------------------------------------------------------------------------
 SELECT
   cc.table_id,
@@ -42,7 +42,7 @@ WHERE r.column_name IS NULL
   AND cc.sensitivity IN ('PII', 'PCI', 'PHI', 'RESTRICTED');
 
 -- ----------------------------------------------------------------------------
--- Q057 · Temporal as-of join (SCD2 point-in-time) — margin at time of sale
+-- Q057 · Temporal as-of join (SCD2 point-in-time) - margin at time of sale
 -- Correct restatement: join transaction to the product version valid THEN.
 -- ----------------------------------------------------------------------------
 SELECT
@@ -62,7 +62,7 @@ WHERE t.txn_date BETWEEN DATE '2026-05-01' AND DATE '2026-07-14'
 LIMIT 100;
 
 -- ----------------------------------------------------------------------------
--- Q058 · MERGE (upsert) — sync glossary terms into a dashboard reference table
+-- Q058 · MERGE (upsert) - sync glossary terms into a dashboard reference table
 -- ----------------------------------------------------------------------------
 MERGE `zumiq-prod.gold_layer.glossary_export` AS tgt
 USING `zumiq-prod.metadata.business_glossary` AS src
@@ -76,7 +76,7 @@ WHEN NOT MATCHED THEN
           src.approved_at, CURRENT_TIMESTAMP());
 
 -- ----------------------------------------------------------------------------
--- Q059 · SELF-JOIN — employees and their managers (flat hierarchy export)
+-- Q059 · SELF-JOIN - employees and their managers (flat hierarchy export)
 -- ----------------------------------------------------------------------------
 SELECT
   e.full_name  AS employee,
@@ -90,7 +90,7 @@ WHERE e.employment_status = 'ACTIVE'
 LIMIT 100;
 
 -- ----------------------------------------------------------------------------
--- Q060 · SELF-JOIN for session pairs — consecutive transactions same customer
+-- Q060 · SELF-JOIN for session pairs - consecutive transactions same customer
 -- (fraud-adjacent pattern: rapid-fire identical amounts, risk team)
 -- ----------------------------------------------------------------------------
 SELECT
@@ -109,7 +109,7 @@ WHERE a.txn_date = DATE '2026-07-14'
 LIMIT 100;
 
 -- ----------------------------------------------------------------------------
--- Q061 · LEFT ANTI JOIN (explicit) — tables in catalog with no pipeline owner
+-- Q061 · LEFT ANTI JOIN (explicit) - tables in catalog with no pipeline owner
 -- ----------------------------------------------------------------------------
 SELECT c.table_id
 FROM `zumiq-prod.metadata.table_catalog` AS c
@@ -119,7 +119,7 @@ WHERE p.target_table IS NULL
   AND c.criticality = 'T1';
 
 -- ----------------------------------------------------------------------------
--- Q062 · FULL OUTER JOIN — reconciliation between two systems (ERP vs OMS)
+-- Q062 · FULL OUTER JOIN - reconciliation between two systems (ERP vs OMS)
 -- The money-match check that Finance runs every morning.
 -- ----------------------------------------------------------------------------
 WITH erp AS (
@@ -145,7 +145,7 @@ WHERE e.txn_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY)
 ORDER BY 1;
 
 -- ----------------------------------------------------------------------------
--- Q063 · Join with aggregated derived table — active customers and their quota
+-- Q063 · Join with aggregated derived table - active customers and their quota
 -- ----------------------------------------------------------------------------
 SELECT
   c.tier,
@@ -163,7 +163,7 @@ GROUP BY 1
 ORDER BY 1;
 
 -- ----------------------------------------------------------------------------
--- Q064 · Cross join to date spine — fill missing days (gap filling)
+-- Q064 · Cross join to date spine - fill missing days (gap filling)
 -- Every BU must have a row for every calendar day, even with no sales.
 -- ----------------------------------------------------------------------------
 SELECT
@@ -182,7 +182,7 @@ WHERE d.date_key BETWEEN DATE '2026-07-01' AND DATE '2026-07-14'
 ORDER BY 1, 2;
 
 -- ----------------------------------------------------------------------------
--- Q065 · Join fan-out guard — verify a fact never joins to 2+ dimension rows
+-- Q065 · Join fan-out guard - verify a fact never joins to 2+ dimension rows
 -- (the "one current dim" integrity check that prevents GMV inflation)
 -- ----------------------------------------------------------------------------
 SELECT
@@ -194,7 +194,7 @@ GROUP BY 1
 HAVING current_versions != 1;
 
 -- ----------------------------------------------------------------------------
--- Q066 · CROSS JOIN with SPLIT — expand CSV lists in metadata (tags)
+-- Q066 · CROSS JOIN with SPLIT - expand CSV lists in metadata (tags)
 -- ----------------------------------------------------------------------------
 SELECT
   c.table_id,

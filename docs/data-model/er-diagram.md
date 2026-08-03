@@ -1,10 +1,10 @@
-# ZUMIQ — Entity Relationship Diagram (ERD)
+# ZUMIQ - Entity Relationship Diagram (ERD)
 
 > **Layer:** Core / Gold (conformed star schema) · **Engine:** BigQuery · **Fiscal calendar:** Feb 1 start
 >
 > Notation: `PK` primary key · `FK` foreign key · `*` NOT NULL · dims are SCD Type 2 where noted.
 
-## 1. Canonical ERD — Core Layer
+## 1. Canonical ERD - Core Layer
 
 ```
                             ┌──────────────────────────┐
@@ -91,7 +91,7 @@
                                    └─────────────────────────────┘
 ```
 
-## 3. Star vs Snowflake — Where Each Is Used
+## 3. Star vs Snowflake - Where Each Is Used
 
 | Pattern | Used For | Tables | Why |
 |---|---|---|---|

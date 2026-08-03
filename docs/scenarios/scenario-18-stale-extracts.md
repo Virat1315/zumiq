@@ -1,4 +1,4 @@
-# Scenario 18 — Stale Tableau Extracts Causing Report Mismatch
+# Scenario 18 - Stale Tableau Extracts Causing Report Mismatch
 
 **Severity:** P2 · **Domain:** BI
 
@@ -8,7 +8,7 @@ dashboard from the same morning. Both "should" be the same number. The gap:
 one used a Tableau extract that was 3 days old.
 
 ## SQL Investigation
-Step 1 — check extract freshness vs the certified view:
+Step 1 - check extract freshness vs the certified view:
 
 ```sql
 SELECT resource_name,
@@ -20,7 +20,7 @@ GROUP BY 1;
 -- BU Review viewed daily (people trust it), so it LOOKS current
 ```
 
-Step 2 — check the underlying table's last load vs extract refresh:
+Step 2 - check the underlying table's last load vs extract refresh:
 
 ```sql
 SELECT target_table, MAX(run_finished_at) AS last_load
@@ -32,7 +32,7 @@ GROUP BY 1;
 -- WEEKLY (Mon) → Tue–Sun the extract is stale.
 ```
 
-Step 3 — confirm the mismatch numerically:
+Step 3 - confirm the mismatch numerically:
 
 ```sql
 SELECT metric_date,
@@ -51,12 +51,12 @@ didn't enforce extract refresh cadence. A dashboard that *looks* fresh can
 serve stale data.
 
 ## Dashboard
-"BI Freshness & Adoption" — per-workbook: extract refresh time, source last
+"BI Freshness & Adoption" - per-workbook: extract refresh time, source last
 load, staleness gap, and viewer count. Red = extract older than source SLA.
 
 ## Business Impact
 - Execs compared two "June revenue" numbers for a day before someone asked.
-- Same trust erosion class as scenario 01 — a governance gap, not a math bug.
+- Same trust erosion class as scenario 01 - a governance gap, not a math bug.
 
 ## Recommendation
 1. **Extract policy**: certified workbooks must refresh ≥ source cadence

@@ -1,5 +1,5 @@
 -- ============================================================================
--- ZUMIQ — Enterprise Data Intelligence Platform
+-- ZUMIQ - Enterprise Data Intelligence Platform
 -- sp_orchestration.sql
 -- Stored procedures that encode the platform's business logic in one place.
 -- Each proc is idempotent, logs to ops.fct_pipeline_runs, and fails loudly.
@@ -113,7 +113,7 @@ END;
 
 -- ----------------------------------------------------------------------------
 -- sp_recompute_executive_kpis
--- Materializes the executive KPI table (grain: BU × region × day) — replaces
+-- Materializes the executive KPI table (grain: BU × region × day) - replaces
 -- the previous ad-hoc re-derivation that caused reporting mismatches.
 -- ----------------------------------------------------------------------------
 CREATE OR REPLACE PROCEDURE `zumiq-prod.analytics_layer.sp_recompute_executive_kpis`(

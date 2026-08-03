@@ -1,4 +1,4 @@
-# Scenario 02 — Unexpected 18% Drop in Daily GMV
+# Scenario 02 - Unexpected 18% Drop in Daily GMV
 
 **Severity:** P1 · **Domain:** Revenue
 
@@ -7,7 +7,7 @@ Daily GMV fell 18% in one day with no apparent business cause. No holiday, no
 outage, no promo change. Execs needed an answer before noon.
 
 ## SQL Investigation
-Step 1 — confirm it's real and isolate it by dimension (drill down):
+Step 1 - confirm it's real and isolate it by dimension (drill down):
 
 ```sql
 WITH daily AS (
@@ -23,7 +23,7 @@ SELECT txn_date, gmv_usd,
 FROM daily ORDER BY txn_date DESC LIMIT 5;
 -- Jul 12 → 14.2M ; Jul 13 → 11.6M (−18.3%)
 
--- Step 2 — which BU / region / channel drove it?
+-- Step 2 - which BU / region / channel drove it?
 SELECT
   bu.bu_code, r.region_name, ch.channel_code,
   ROUND(SUM(t.amount_usd), 2) AS gmv,
@@ -35,7 +35,7 @@ JOIN `zumiq-prod.core_layer.dim_channel`     AS ch ON t.channel_key = ch.channel
 WHERE t.txn_date = '2026-07-13' AND t.status='POSTED' AND t.is_reversal = FALSE
 GROUP BY 1, 2, 3 ORDER BY 4 DESC LIMIT 10;
 
--- Step 3 — is it a volume drop or a value drop? Check transaction counts.
+-- Step 3 - is it a volume drop or a value drop? Check transaction counts.
 SELECT
   COUNT(*) AS txn_count,
   COUNT(DISTINCT customer_key) AS customers,
@@ -48,11 +48,11 @@ WHERE txn_date = '2026-07-13';
 ## Root Cause
 The payment gateway's batch feed failed silently at 03:00; the OMS kept
 generating transactions but the ERP settlement feed didn't arrive until 11:00.
-The overnight load ran with a **partial source** and published anyway — a
+The overnight load ran with a **partial source** and published anyway - a
 classic silent-failure pattern. The DQ engine had no volume rule yet.
 
 ## Dashboard
-"GMV Anomaly" — daily GMV vs 28-day trailing average with the VOLUME and
+"GMV Anomaly" - daily GMV vs 28-day trailing average with the VOLUME and
 FRESHNESS flags on the executive overview. Red flag + drill path.
 
 ## Business Impact

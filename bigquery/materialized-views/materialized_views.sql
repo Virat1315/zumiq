@@ -1,5 +1,5 @@
 -- ============================================================================
--- ZUMIQ — Enterprise Data Intelligence Platform
+-- ZUMIQ - Enterprise Data Intelligence Platform
 -- materialized_views.sql
 -- BigQuery materialized views: the engine auto-increments these as the base
 -- tables change, so "fresh but cheap" pre-aggregates exist with NO manual
@@ -68,7 +68,7 @@ CLUSTER BY user_email
 OPTIONS (
   enable_refresh = TRUE,
   refresh_interval_minutes = 1440,
-  description = 'Daily BigQuery spend by user — powers cost anomaly alerting.'
+  description = 'Daily BigQuery spend by user - powers cost anomaly alerting.'
 ) AS
 SELECT
   job_date,

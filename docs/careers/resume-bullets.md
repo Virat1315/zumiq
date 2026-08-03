@@ -1,4 +1,4 @@
-# ZUMIQ — Resume Bullet Points
+# ZUMIQ - Resume Bullet Points
 
 > Copy-paste-ready, quantified, role-targeted. Pick the set that matches the
 > job you're applying for. Numbers are real to the project (synthetic data,
@@ -8,7 +8,7 @@
 
 - Designed and shipped an enterprise data intelligence platform (ZUMIQ) that
   converts raw operational data from 9 source systems into certified, governed
-  data products — 6,500+ internal users, 1.2M events/day.
+  data products - 6,500+ internal users, 1.2M events/day.
 - Defined the north-star metric (Weekly Trusted Decisions) and a guardrail
   framework (DQ score, freshness, cost/TB); eliminated 7 conflicting KPI
   definitions via a semantic layer + certified glossary, reducing metric
@@ -20,7 +20,7 @@
   certified data products and 10 dashboards; recovered a 38% adoption drop by
   instrumenting usage and interviewing 12 users (churn→recovery in one quarter).
 - Led data-product operations: ownership, SLAs, DQ floors, deprecation
-  workflow — 100% of T1 tables certified and owned.
+  workflow - 100% of T1 tables certified and owned.
 
 ## Analytics Engineer / Data Product Analyst
 
@@ -56,7 +56,7 @@
   impact → recommendation), including an 18% GMV drop traced to a silent feed
   failure and a $2.3M duplicate-revenue near-miss.
 - Designed 10 certified Tableau dashboards (Executive Overview, P&L, Ops Health,
-  CX SLA, Platform Health, DQ, Cost) — each with purpose, KPI, calculation,
+  CX SLA, Platform Health, DQ, Cost) - each with purpose, KPI, calculation,
   target user, and decision enabled.
 - Built KPI frameworks: executive / business / operational / platform / data
   product tiers, plus adoption funnel and north-star tracking on the platform

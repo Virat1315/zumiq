@@ -1,11 +1,11 @@
 -- ============================================================================
--- ZUMIQ — SQL LIBRARY · 04_json_struct_array.sql
--- BigQuery JSON, STRUCT, ARRAY functions — used for event payloads,
+-- ZUMIQ - SQL LIBRARY · 04_json_struct_array.sql
+-- BigQuery JSON, STRUCT, ARRAY functions - used for event payloads,
 -- metadata, lineage, and ML feature tables.
 -- ============================================================================
 
 -- ----------------------------------------------------------------------------
--- Q043 · JSON_VALUE — extract simple fields from operational event payloads
+-- Q043 · JSON_VALUE - extract simple fields from operational event payloads
 -- ----------------------------------------------------------------------------
 SELECT
   event_id,
@@ -19,7 +19,7 @@ WHERE event_type = 'PAYMENT_FAILED'
 LIMIT 50;
 
 -- ----------------------------------------------------------------------------
--- Q044 · JSON_QUERY — extract nested arrays (items within an order payload)
+-- Q044 · JSON_QUERY - extract nested arrays (items within an order payload)
 -- ----------------------------------------------------------------------------
 SELECT
   event_id,
@@ -31,7 +31,7 @@ WHERE event_type = 'ORDER_PLACED'
 LIMIT 50;
 
 -- ----------------------------------------------------------------------------
--- Q045 · JSON_EXTRACT_ARRAY + UNNEST — flatten order line items into rows
+-- Q045 · JSON_EXTRACT_ARRAY + UNNEST - flatten order line items into rows
 -- ----------------------------------------------------------------------------
 SELECT
   e.event_id,
@@ -45,7 +45,7 @@ WHERE e.event_type = 'ORDER_PLACED'
 LIMIT 100;
 
 -- ----------------------------------------------------------------------------
--- Q046 · JSON_QUERY_ARRAY + STRING_AGG — comma list of failure reasons per BU
+-- Q046 · JSON_QUERY_ARRAY + STRING_AGG - comma list of failure reasons per BU
 -- ----------------------------------------------------------------------------
 WITH failures AS (
   SELECT
@@ -62,7 +62,7 @@ FROM failures, UNNEST(errors) AS err
 GROUP BY 1;
 
 -- ----------------------------------------------------------------------------
--- Q047 · STRUCT construction — build a nested customer profile row
+-- Q047 · STRUCT construction - build a nested customer profile row
 -- ----------------------------------------------------------------------------
 SELECT
   c.customer_id,
@@ -77,7 +77,7 @@ WHERE c.is_current = TRUE
 LIMIT 20;
 
 -- ----------------------------------------------------------------------------
--- Q048 · STRUCT unpacking — unnest the JSON failure samples stored in DQ results
+-- Q048 · STRUCT unpacking - unnest the JSON failure samples stored in DQ results
 -- The DQ engine stores failing rows as JSON; this turns them back into rows
 -- so the analyst can see exactly which records broke the check.
 -- ----------------------------------------------------------------------------
@@ -95,7 +95,7 @@ WHERE dq.status = 'FAIL'
 LIMIT 50;
 
 -- ----------------------------------------------------------------------------
--- Q049 · ARRAY_AGG with FILTER — pivot list of customer's last 3 products
+-- Q049 · ARRAY_AGG with FILTER - pivot list of customer's last 3 products
 -- ----------------------------------------------------------------------------
 SELECT
   customer_key,
@@ -105,7 +105,7 @@ WHERE status='POSTED' AND is_reversal = FALSE
 GROUP BY 1;
 
 -- ----------------------------------------------------------------------------
--- Q050 · UNNEST for value counts — distribution of event payload keys
+-- Q050 · UNNEST for value counts - distribution of event payload keys
 -- ----------------------------------------------------------------------------
 SELECT
   key_name,
@@ -117,7 +117,7 @@ GROUP BY 1
 ORDER BY 2 DESC;
 
 -- ----------------------------------------------------------------------------
--- Q051 · JSON + window — per-SKU failure ratio in a 7-day window
+-- Q051 · JSON + window - per-SKU failure ratio in a 7-day window
 -- ----------------------------------------------------------------------------
 SELECT
   sku,
@@ -136,7 +136,7 @@ HAVING SUM(failures) > 0
 ORDER BY 3 DESC;
 
 -- ----------------------------------------------------------------------------
--- Q052 · JSON_TO_STRUCT / struct types — typed extraction of order payload
+-- Q052 · JSON_TO_STRUCT / struct types - typed extraction of order payload
 -- ----------------------------------------------------------------------------
 SELECT
   event_id,
@@ -151,7 +151,7 @@ WHERE event_type = 'ORDER_PLACED'
 LIMIT 20;
 
 -- ----------------------------------------------------------------------------
--- Q053 · Metadata as JSON — lineage graph as nested edges (for graph tools)
+-- Q053 · Metadata as JSON - lineage graph as nested edges (for graph tools)
 -- ----------------------------------------------------------------------------
 SELECT
   target_table,
@@ -160,7 +160,7 @@ FROM `zumiq-prod.metadata.lineage_edges`
 GROUP BY 1;
 
 -- ----------------------------------------------------------------------------
--- Q054 · TO_JSON_STRING — build the alert payload for a DQ failure
+-- Q054 · TO_JSON_STRING - build the alert payload for a DQ failure
 -- ----------------------------------------------------------------------------
 SELECT
   run_id,

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ============================================================================
-# ZUMIQ — Provisioning & bootstrap
+# ZUMIQ - Provisioning & bootstrap
 # Creates datasets, tables, views, and bootstraps the platform.
 # Usage: bash scripts/00_setup.sh
 # Prereq: authenticated gcloud + BigQuery enabled on the project.

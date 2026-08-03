@@ -1,14 +1,14 @@
-# Scenario 10 — Late-Arriving Data Forcing a Restatement
+# Scenario 10 - Late-Arriving Data Forcing a Restatement
 
 **Severity:** P1 · **Domain:** Timeliness
 
 ## Problem
 Two weeks after a daily GMV report was published, 1.4% of its transactions
-arrived late (3–9 days after the fact). Finance had to re-state the number —
+arrived late (3–9 days after the fact). Finance had to re-state the number -
 and the BU had already acted on the first version.
 
 ## SQL Investigation
-Step 1 — quantify late arrivals by day:
+Step 1 - quantify late arrivals by day:
 
 ```sql
 SELECT
@@ -24,7 +24,7 @@ ORDER BY 1;
 -- Jun 18: 12,400 rows arrived 5-9 days late (1.4% of the day)
 ```
 
-Step 2 — where did they come from?
+Step 2 - where did they come from?
 
 ```sql
 SELECT source_system, txn_type, COUNT(*) AS n, SUM(amount_usd) AS amt
@@ -35,7 +35,7 @@ GROUP BY 1, 2 ORDER BY 3 DESC;
 -- ERP "batch settlement" file for Jun 18 only processed on Jun 27 (vendor backlog)
 ```
 
-Step 3 — was the report frozen correctly? (as-of check)
+Step 3 - was the report frozen correctly? (as-of check)
 
 ```sql
 -- If the report was "as-of Jun 20", late Jun 18 rows SHOULD have been excluded.
@@ -49,18 +49,18 @@ WHERE txn_date = '2026-06-18';
 
 ## Root Cause
 Transactions can legitimately arrive late (vendor settlement lag). The
-reporting layer had **no point-in-time (as-of) semantics** — it just re-read
+reporting layer had **no point-in-time (as-of) semantics** - it just re-read
 the table, so the published number kept changing silently. SCD2-style versioning
 existed for dims but not for *report snapshots*.
 
 ## Dashboard
-"Late Arrivals / Restatement Risk" — daily late-row counts, max lateness, and
+"Late Arrivals / Restatement Risk" - daily late-row counts, max lateness, and
 which reports are affected (via lineage).
 
 ## Business Impact
 - Formal restatement of a published daily KPI.
 - BU made a staffing decision on stale data.
-- Finance added a restatement line item — the cost of untrusted numbers.
+- Finance added a restatement line item - the cost of untrusted numbers.
 
 ## Recommendation
 1. **As-of reporting**: certified KPI views support `AS_OF_DATE` so a report is

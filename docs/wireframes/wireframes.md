@@ -1,4 +1,4 @@
-# ZUMIQ — Wireframes
+# ZUMIQ - Wireframes
 
 > ASCII wireframes for the platform's key surfaces. These are product-design
 > artifacts: they show layout, hierarchy, and the decision each screen enables.
@@ -26,7 +26,7 @@
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│ ZUMIQ  P&L — Retail (RTL)              [Region ▾] [Channel ▾] [MoM ▾]           │
+│ ZUMIQ  P&L - Retail (RTL)              [Region ▾] [Channel ▾] [MoM ▾]           │
 ├─────────────────────────────────────────────────────────────────────────────────┤
 │ Net Revenue      Gross Margin      Refund Rate    Chargebacks    AOV            │
 │ $41.2M  ▲6%      $12.9M  31.2%     2.1%           0.4%           $94.10         │
@@ -76,10 +76,10 @@
 ┌─────────────────────────────────────────────────────────────────────────────────┐
 │ ZUMIQ  Alerts                              Open: 3  [Ack SLA 30 min]            │
 ├─────────────────────────────────────────────────────────────────────────────────┤
-│ [HIGH] DQ score drop — Customer 360    21 min ago   [View RCA] [Ack] [Link lin.]│
+│ [HIGH] DQ score drop - Customer 360    21 min ago   [View RCA] [Ack] [Link lin.]│
 │        message: DQ 89.4 < 95 · dimension: COMPLETENESS · 12k rows null email    │
-│ [HIGH] Freshness breach — fct_transactions 2h ago   [Runbook] [Ack]            │
-│ [MED]  Cost spike — analyst@… 3h ago                [Top queries] [Ack]        │
+│ [HIGH] Freshness breach - fct_transactions 2h ago   [Runbook] [Ack]            │
+│ [MED]  Cost spike - analyst@… 3h ago                [Top queries] [Ack]        │
 │ ─────────────────────────────────────────────────────────────────────────────── │
 │ Related: pipeline run r-8821 FAILED · target core_layer.fct_transactions       │
 └─────────────────────────────────────────────────────────────────────────────────┘
