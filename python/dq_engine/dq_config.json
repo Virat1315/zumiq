@@ -1,0 +1,9 @@
+{
+  "project": "zumiq-prod",
+  "rule_table": "zumiq-prod.governance.dq_rules",
+  "result_table": "zumiq-prod.governance.dq_run_results",
+  "health_table": "zumiq-prod.governance.dq_health_daily",
+  "alert_table": "zumiq-prod.ops.alert_history",
+  "score_floor": 90.0,
+  "severity_weights": { "ERROR": 1.0, "WARNING": 0.5, "INFO": 0.1 }
+}

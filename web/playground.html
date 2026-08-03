@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SQL Playground — ZUMIQ</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo">Z</div>
+      <div><div class="name">ZUMIQ</div><div class="sub">Enterprise Data Platform</div></div>
+    </div>
+    <nav class="nav" id="nav"></nav>
+    <div class="side-foot">Demo dataset · as of <b>2026-07-14</b><br>All figures are synthetic</div>
+  </aside>
+  <main class="main">
+    <div class="topbar" id="topbar"></div>
+    <div class="engine-note">
+      <b>Sandbox engine:</b> this demo runs a browser-side SQL subset (SELECT with WHERE / GROUP BY / ORDER BY / LIMIT,
+      plus SUM, COUNT, COUNT(DISTINCT), AVG, MIN, MAX) over static, seeded datasets — no warehouse is queried.
+      The full 105-query production library lives in <code>sql/</code> and runs on BigQuery.
+    </div>
+    <div id="content"></div>
+  </main>
+</div>
+<script src="js/data.js"></script>
+<script src="js/common.js"></script>
+<script src="js/pages/playground.js"></script>
+</body>
+</html>

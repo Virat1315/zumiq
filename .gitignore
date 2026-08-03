@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Secrets & credentials
+*.key
+*.pem
+service-account*.json
+credentials.json
+.env
+
+# BigQuery / gcloud
+.bigqueryrc
+.credentials/
+
+# IDEs / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Local artifacts
+*.log
+.data/
+.tmp/

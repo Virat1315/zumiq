@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ZUMIQ — Executive Overview Workbook (Tableau Desktop / Server)
+  ==============================================================
+  Certified workbook. Data source: BigQuery semantic layer.
+  Connects to: analytics_layer.v_executive_overview (primary)
+               governance.dq_health_daily
+               ops.fct_pipeline_runs
+               cost.fct_query_cost
+
+  IMPORTANT:
+    - This file is a PORTFOLIO REFERENCE / bootstrap workbook.
+    - It declares the certified data source + key sheets; open it in Tableau
+      Desktop, re-point the Google BigQuery connection to your project
+      (zumiq-prod), and the sheets will bind to the certified views.
+    - Dashboard governance rule: every sheet must resolve to a CERTIFIED view.
+-->
+<workbook source-build="2024.1" source-platform="win" version="18.1" xml:space="preserve">
+  <datasources>
+    <datasource caption="v_executive_overview" inline="true" version="18.1">
+      <connection authentication="auth-none" class="google-bigquery" dbname="zumiq-prod" schema="analytics_layer" server="bigquery.googleapis.com" username="" password="">
+        <relation connection="google-bigquery" name="analytics_layer.v_executive_overview" table="v_executive_overview">
+          <attributes>
+            <attribute name="connection" value="google-bigquery" />
+          </attributes>
+        </relation>
+        <metadata-records>
+          <metadata-record class="column">
+            <remote-name>metric_date</remote-name>
+            <local-name>[metric_date]</local-name>
+            <datatype>date</datatype>
+          </metadata-record>
+          <metadata-record class="column">
+            <remote-name>bu_name</remote-name>
+            <local-name>[bu_name]</local-name>
+            <datatype>string</datatype>
+          </metadata-record>
+          <metadata-record class="column">
+            <remote-name>region_name</remote-name>
+            <local-name>[region_name]</local-name>
+            <datatype>string</datatype>
+          </metadata-record>
+          <metadata-record class="column">
+            <remote-name>gmv_usd</remote-name>
+            <local-name>[gmv_usd]</local-name>
+            <datatype>real</datatype>
+          </metadata-record>
+          <metadata-record class="column">
+            <remote-name>active_customers</remote-name>
+            <local-name>[active_customers]</local-name>
+            <datatype>integer</datatype>
+          </metadata-record>
+          <metadata-record class="column">
+            <remote-name>avg_order_value_usd</remote-name>
+            <local-name>[avg_order_value_usd]</local-name>
+            <datatype>real</datatype>
+          </metadata-record>
+          <metadata-record class="column">
+            <remote-name>blended_margin_rate</remote-name>
+            <local-name>[blended_margin_rate]</local-name>
+            <datatype>real</datatype>
+          </metadata-record>
+          <metadata-record class="column">
+            <remote-name>dq_score</remote-name>
+            <local-name>[dq_score]</local-name>
+            <datatype>real</datatype>
+          </metadata-record>
+          <metadata-record class="column">
+            <remote-name>freshness_hours</remote-name>
+            <local-name>[freshness_hours]</local-name>
+            <datatype>integer</datatype>
+          </metadata-record>
+          <metadata-record class="column">
+            <remote-name>cost_usd</remote-name>
+            <local-name>[cost_usd]</local-name>
+            <datatype>real</datatype>
+          </metadata-record>
+        </metadata-records>
+      </connection>
+    </datasource>
+  </datasources>
+
+  <worksheets>
+    <worksheet name="GMV Trend">
+      <table>
+        <view>
+          <datasources>
+            <datasource caption="v_executive_overview" />
+          </datasources>
+          <datasource-dependencies>
+            <column datatype="date" role="dimension" type="nominal">[metric_date]</column>
+            <column datatype="real" role="measure" type="quantitative">SUM([gmv_usd])</column>
+            <column datatype="string" role="dimension" type="nominal">[bu_name]</column>
+          </datasource-dependencies>
+        </view>
+      </table>
+      <description>
+        Certified: GMV trend by business unit. SUM([gmv_usd]) on columns over [metric_date]
+        on rows, colored by [bu_name]. Reference line = 28-day average.
+        Business question: "Are we on track today vs trend?"
+      </description>
+    </worksheet>
+
+    <worksheet name="DQ Health">
+      <table>
+        <view>
+          <datasources>
+            <datasource caption="v_executive_overview" />
+          </datasources>
+          <datasource-dependencies>
+            <column datatype="date" role="dimension" type="nominal">[metric_date]</column>
+            <column datatype="real" role="measure" type="quantitative">AVG([dq_score])</column>
+          </datasource-dependencies>
+        </view>
+      </table>
+      <description>
+        Certified: Enterprise DQ score trend. AVG([dq_score]) line over [metric_date].
+        Threshold line at 95 (DQ floor). Business question: "Is data trust stable?"
+      </description>
+    </worksheet>
+
+    <worksheet name="Cost by Day">
+      <table>
+        <view>
+          <datasources>
+            <datasource caption="v_executive_overview" />
+          </datasources>
+          <datasource-dependencies>
+            <column datatype="date" role="dimension" type="nominal">[metric_date]</column>
+            <column datatype="real" role="measure" type="quantitative">SUM([cost_usd])</column>
+          </datasource-dependencies>
+        </view>
+      </table>
+      <description>
+        Certified: Daily platform query cost. SUM([cost_usd]) over [metric_date].
+        Business question: "Are we within budget, and did anything spike?"
+      </description>
+    </worksheet>
+
+    <worksheet name="KPI Tiles">
+      <table>
+        <view>
+          <datasources>
+            <datasource caption="v_executive_overview" />
+          </datasources>
+          <datasource-dependencies>
+            <column datatype="real" role="measure" type="quantitative">SUM([gmv_usd])</column>
+            <column datatype="real" role="measure" type="quantitative">SUM([active_customers])</column>
+            <column datatype="real" role="measure" type="quantitative">SUM([avg_order_value_usd])</column>
+          </datasource-dependencies>
+        </view>
+      </table>
+      <description>
+        Certified: Big-number tiles — GMV, Active Customers, AOV (latest day), DQ Score,
+        Freshness. The numbers here are guaranteed to match every other dashboard.
+      </description>
+    </worksheet>
+  </worksheets>
+
+  <dashboards>
+    <dashboard name="Executive Overview">
+      <style>
+        <default-sheet-title-color>#1A1F36</default-sheet-title-color>
+      </style>
+      <zone h="4" w="12" x="0" y="0">
+        <style>
+          <worksheet-card />
+        </style>
+        <worksheet name="KPI Tiles" />
+      </zone>
+      <zone h="6" w="12" x="0" y="4">
+        <style>
+          <worksheet-card />
+        </style>
+        <worksheet name="GMV Trend" />
+      </zone>
+      <zone h="4" w="6" x="0" y="10">
+        <style>
+          <worksheet-card />
+        </style>
+        <worksheet name="DQ Health" />
+      </zone>
+      <zone h="4" w="6" x="6" y="10">
+        <style>
+          <worksheet-card />
+        </style>
+        <worksheet name="Cost by Day" />
+      </zone>
+    </dashboard>
+  </dashboards>
+
+  <windows>
+    <window class="workspace" name="Executive Overview" />
+  </windows>
+</workbook>
