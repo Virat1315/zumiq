@@ -1,4 +1,8 @@
-name: Deploy static site to Pages
+name: Deploy the analytics demo to Pages
+
+# The full ZUMIQ platform is a Next.js app deployed to Vercel. GitHub Pages
+# serves static files only, so it publishes the dependency-free analytics
+# demo from public/web rather than the repository root.
 
 on:
   push:
@@ -28,7 +32,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: public/web
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

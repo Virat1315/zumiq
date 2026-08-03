@@ -12,7 +12,7 @@ This repository is a complete, interview-ready portfolio artifact. Every design 
 
 **The platform:** https://zumiq.vercel.app
 
-A Next.js 16 + TypeScript + Tailwind application in [`platform/`](platform/). This is the product surface: the part an operator uses daily, rather than a report they read.
+A Next.js 16 + TypeScript + Tailwind application in the repository root. This is the product surface: the part an operator uses daily, rather than a report they read.
 
 | Route | What it does |
 |---|---|
@@ -23,10 +23,10 @@ A Next.js 16 + TypeScript + Tailwind application in [`platform/`](platform/). Th
 
 ### Where the data comes from
 
-Everything routes through a single interface, [`DataAdapter`](platform/lib/data/types.ts). Two implementations satisfy it:
+Everything routes through a single interface, [`DataAdapter`](lib/data/types.ts). Two implementations satisfy it:
 
-- [`seeded.ts`](platform/lib/data/seeded.ts) is active by default. It needs no credentials and no billing, which is what lets the live URL work for anyone who opens it.
-- [`bigquery.ts`](platform/lib/data/bigquery.ts) carries the real SQL for each method, partition-filtered and reading pre-aggregated tables rather than raw facts. Setting `ZUMIQ_DATA_SOURCE=bigquery` selects it.
+- [`seeded.ts`](lib/data/seeded.ts) is active by default. It needs no credentials and no billing, which is what lets the live URL work for anyone who opens it.
+- [`bigquery.ts`](lib/data/bigquery.ts) carries the real SQL for each method, partition-filtered and reading pre-aggregated tables rather than raw facts. Setting `ZUMIQ_DATA_SOURCE=bigquery` selects it.
 
 No page or component knows which one it got. Pointing ZUMIQ at a warehouse is finishing one file, not refactoring an app.
 
@@ -34,7 +34,7 @@ No page or component knows which one it got. Pointing ZUMIQ at a warehouse is fi
 
 **Static site (GitHub Pages):** https://Virat1315.github.io/zumiq/
 
-A self-contained, dependency-free static site in [`platform/public/web/`](platform/public/web/), also served by the platform at [`/web/index.html`](https://zumiq.vercel.app/web/index.html):
+A self-contained, dependency-free static site in [`public/web/`](public/web/), also served by the platform at [`/web/index.html`](https://zumiq.vercel.app/web/index.html):
 
 | Page | What it shows |
 |---|---|
@@ -46,7 +46,7 @@ A self-contained, dependency-free static site in [`platform/public/web/`](platfo
 | **Scenarios** | All 22 incident playbooks, filterable by domain and severity |
 | **Architecture** | Medallion layers, pipeline health, and the certified asset catalog |
 
-All data is generated client-side by a seeded PRNG - no backend, no trackers, no external CDNs - so it also opens from `file://`. The site is deployed from the repo root via [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) (Pages source: *GitHub Actions*).
+All data is generated client-side by a seeded PRNG - no backend, no trackers, no external CDNs - so it also opens from `file://`. The site is deployed from `public/web` via [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) (Pages source: *GitHub Actions*).
 
 ---
 
