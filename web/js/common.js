@@ -1,24 +1,106 @@
 /* ZUMIQ — shared utilities, nav shell, chart helpers */
 (function () {
   "use strict";
+  /* `group` only affects how the sidebar is labelled — the list, ids, hrefs
+     and order are unchanged, so every page module still resolves the same. */
   const NAV = [
-    { id: "executive", href: "index.html", label: "Executive Overview", icon: "◉" },
-    { id: "business", href: "business.html", label: "Business Units", icon: "▤" },
-    { id: "quality", href: "quality.html", label: "Data Quality", icon: "✚" },
-    { id: "cost", href: "cost.html", label: "Cloud Cost", icon: "◈" },
-    { id: "playground", href: "playground.html", label: "SQL Playground", icon: "⌘" },
-    { id: "scenarios", href: "scenarios.html", label: "Scenarios", icon: "⚠" },
-    { id: "architecture", href: "architecture.html", label: "Architecture", icon: "⌥" }
+    { id: "executive", href: "index.html", label: "Executive Overview", icon: "◉", group: "Analyse" },
+    { id: "business", href: "business.html", label: "Business Units", icon: "▤", group: "Analyse" },
+    { id: "quality", href: "quality.html", label: "Data Quality", icon: "✚", group: "Operate" },
+    { id: "cost", href: "cost.html", label: "Cloud Cost", icon: "◈", group: "Operate" },
+    { id: "scenarios", href: "scenarios.html", label: "Scenarios", icon: "⚠", group: "Operate" },
+    { id: "playground", href: "playground.html", label: "SQL Playground", icon: "⌘", group: "Build" },
+    { id: "architecture", href: "architecture.html", label: "Architecture", icon: "⌥", group: "Build" }
   ];
 
   function renderNav(active) {
     const el = document.getElementById("nav");
     if (!el) return;
-    el.innerHTML = NAV.map(n =>
-      `<a href="${n.href}" class="${n.id === active ? "active" : ""}"><span class="ico">${n.icon}</span>${n.label}</a>`
-    ).join("");
+
+    let html = "", lastGroup = null;
+    for (const n of NAV) {
+      if (n.group !== lastGroup) {
+        html += `<div class="nav-group">${n.group}</div>`;
+        lastGroup = n.group;
+      }
+      html += `<a href="${n.href}" class="${n.id === active ? "active" : ""}"` +
+              `${n.id === active ? ' aria-current="page"' : ""}>` +
+              `<span class="ico" aria-hidden="true">${n.icon}</span>${n.label}</a>`;
+    }
+    el.innerHTML = html;
+
+    buildTourLaunch(active);
+    buildMobileBar(active);
+
     const foot = document.querySelector(".side-foot");
     if (foot) foot.innerHTML += `<br><a href="https://github.com/Virat1315/zumiq" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none">Source on GitHub ↗</a>`;
+  }
+
+  /* ---------- tour launcher ---------- */
+  /* Sits directly under the nav. Only rendered when tour.js is loaded and has
+     steps for this page, so a page without a tour never shows a dead button. */
+  function buildTourLaunch(active) {
+    const nav = document.getElementById("nav");
+    if (!nav || !window.ZQTour || !window.ZQTour.has(active)) return;
+    if (document.querySelector(".tour-launch")) return;
+
+    const btn = document.createElement("button");
+    btn.className = "tour-launch";
+    btn.type = "button";
+    btn.innerHTML = `<span aria-hidden="true">◎</span> Take the tour`;
+    btn.addEventListener("click", () => {
+      closeDrawer();
+      window.ZQTour.start(active);
+    });
+    nav.insertAdjacentElement("afterend", btn);
+
+    // First-ever visit: start it automatically. Afterwards just pulse once so
+    // the button is discoverable without hijacking the page again.
+    if (!window.ZQTour.seen()) {
+      setTimeout(() => window.ZQTour.start(active), 700);
+    } else {
+      btn.classList.add("nudge");
+      setTimeout(() => btn.classList.remove("nudge"), 8000);
+    }
+  }
+
+  /* ---------- mobile drawer ---------- */
+  function closeDrawer() {
+    const sb = document.querySelector(".sidebar");
+    const sc = document.querySelector(".scrim");
+    if (sb) sb.classList.remove("open");
+    if (sc) sc.classList.remove("show");
+    const h = document.querySelector(".hamburger");
+    if (h) h.setAttribute("aria-expanded", "false");
+  }
+
+  function buildMobileBar(active) {
+    if (document.querySelector(".mobile-bar")) return;
+    const app = document.querySelector(".app");
+    if (!app) return;
+
+    const current = NAV.find(n => n.id === active);
+
+    const bar = document.createElement("div");
+    bar.className = "mobile-bar";
+    bar.innerHTML =
+      `<button class="hamburger" type="button" aria-label="Open navigation" aria-expanded="false">☰</button>` +
+      `<div><div class="mb-title">ZUMIQ</div>` +
+      `<div class="mb-sub">${current ? current.label : "Enterprise Data Platform"}</div></div>`;
+    document.body.insertBefore(bar, app);
+
+    const scrim = document.createElement("div");
+    scrim.className = "scrim";
+    document.body.appendChild(scrim);
+
+    const sb = document.querySelector(".sidebar");
+    bar.querySelector(".hamburger").addEventListener("click", (e) => {
+      const open = sb.classList.toggle("open");
+      scrim.classList.toggle("show", open);
+      e.currentTarget.setAttribute("aria-expanded", String(open));
+    });
+    scrim.addEventListener("click", closeDrawer);
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeDrawer(); });
   }
 
   /* ---------- formatting ---------- */
