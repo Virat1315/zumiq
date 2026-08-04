@@ -1,20 +1,21 @@
 import type { Metadata } from "next";
-import { Shell } from "@/components/shell";
-import { data } from "@/lib/data";
+import { Inter } from "next/font/google";
+import { Toaster } from "sonner";
 import "./globals.css";
 
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+
 export const metadata: Metadata = {
-  title: "ZUMIQ | Enterprise Data Intelligence Platform",
-  description:
-    "Turning enterprise operational data into trusted, governed and actionable intelligence. " +
-    "Incident management, scenario simulation, data quality and cost control over a BigQuery warehouse.",
+  title: "ZUMIQ - Enterprise Data Intelligence",
+  description: "Self-serve data intelligence for enterprise teams.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body>
-        <Shell source={data.source}>{children}</Shell>
+    <html lang="en" className="dark">
+      <body className={`${inter.variable} font-sans antialiased`}>
+        {children}
+        <Toaster theme="dark" position="top-right" richColors />
       </body>
     </html>
   );

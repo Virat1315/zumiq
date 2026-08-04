@@ -12,23 +12,31 @@ This repository is a complete, interview-ready portfolio artifact. Every design 
 
 **The platform:** https://zumiq.vercel.app
 
-A Next.js 16 + TypeScript + Tailwind application in the repository root. This is the product surface: the part an operator uses daily, rather than a report they read.
+A Next.js 16 + TypeScript + Tailwind + shadcn/ui application in the repository root. This is the product surface: the part an operator uses daily, rather than a report they read.
+
+Sign in at [`/login`](https://zumiq.vercel.app/login) with any seeded account. `ada@zumiq.io` is the admin and sees every module; the others demonstrate role-based access.
 
 | Route | What it does |
 |---|---|
-| **Platform Home** (`/`) | Enterprise KPI, quality, pipeline, freshness, cost and exposure in one triage view, with an open-incident queue and an audit feed |
-| **Incident Center** (`/incidents`) | The full incident register, filterable by severity, status, domain and free text across owners, KPIs and affected tables |
-| **Incident detail** (`/incidents/[id]`) | Owner, time to resolve, quantified exposure, root cause, resolution, a full timeline, and the KPIs and warehouse objects affected |
-| **Scenario Simulator** (`/simulator`) | Move an operating driver off its measured baseline and read the annualised revenue, cost, operational and customer effect, with every assumption shown |
+| **Home** (`/`) | Platform health, enterprise KPI score, quality, pipeline health, today's alerts, cloud cost, open incidents and quick actions |
+| **KPI Studio** (`/kpis`) | Build a KPI from dataset, metric, aggregation, dimension, window and threshold; the platform generates the SQL and registers the metadata |
+| **Data Quality** (`/quality`) | Rule builder and rule register, with per-rule execution against the seeded warehouse |
+| **CSV Upload** (`/upload`) | Validates an uploaded file for missing values, duplicates, outliers, schema errors and business-rule violations before accepting it |
+| **Pipelines** (`/pipelines`) | Landing through analytics, each stage with execution history, logs and SLA |
+| **Incidents** (`/incidents`) | Register with severity, owner, timeline, root cause, resolution and affected KPIs |
+| **Notifications** (`/notifications`) | Pipeline failures, KPI drops, freshness breaches, cost spikes and schema drift |
+| **Catalog** (`/catalog`) | Dataset, table and column metadata: owner, meaning, refresh schedule, consumers, lineage and sensitivity |
+| **Query Playground** (`/playground`) | Runs real SQL against the seeded warehouse and returns real result sets |
+| **Marketplace** (`/marketplace`) | Trusted datasets as products: owner, consumers, quality score, freshness, version and access requests |
+| **Cloud Cost** (`/cost`) | Most expensive queries, storage, partition and clustering savings, unused tables |
+| **Governance** (`/governance`) | Policies, retention, classification, PII tags, glossary and audit logs |
+| **Executive Ask** (`/ask`) | Ask a business question and get the KPIs, datasets, pipeline state, recent incidents and likely root causes behind it |
+| **Scenario Simulator** (`/simulator`) | Move operating drivers and read revenue, operational, cost and customer impact |
+| **Product Analytics** (`/analytics`) | Adoption, active users, most-used KPIs, dashboard and search usage |
 
-### Where the data comes from
+### Authentication and access control
 
-Everything routes through a single interface, [`DataAdapter`](lib/data/types.ts). Two implementations satisfy it:
-
-- [`seeded.ts`](lib/data/seeded.ts) is active by default. It needs no credentials and no billing, which is what lets the live URL work for anyone who opens it.
-- [`bigquery.ts`](lib/data/bigquery.ts) carries the real SQL for each method, partition-filtered and reading pre-aggregated tables rather than raw facts. Setting `ZUMIQ_DATA_SOURCE=bigquery` selects it.
-
-No page or component knows which one it got. Pointing ZUMIQ at a warehouse is finishing one file, not refactoring an app.
+Session auth is HMAC-signed and cookie-backed ([`lib/auth.ts`](lib/auth.ts)), enforced for every route by [`proxy.ts`](proxy.ts), the Next.js 16 middleware convention. Six roles (admin, executive, analyst, engineer, pm, operations) each resolve to a different navigation set and a different set of permitted routes; an unauthorised route redirects rather than rendering. Set `ZUMIQ_SECRET` in production to replace the development signing key.
 
 ### The analytics demo
 
