@@ -1,4 +1,4 @@
-# ZUMIQ - Enterprise Data Intelligence Platform
+# ZUMIQ - Enterprise Data Intelligence Webpage
 
 > **Tagline:** A cloud-native enterprise platform that transforms raw operational data into trusted, governed, analytics-ready data products for enterprise decision making.
 
